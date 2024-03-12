@@ -1,0 +1,32 @@
+.text-center
+{
+    text-align: center;
+}
+
+.header-theme
+{
+    color:#fff;
+    background-color: #000000;
+}
+
+.header-padding
+{
+    padding: 80px 10px;
+}
+
+h1
+{
+    font-size: 48px;
+}
+
+h4
+{
+    font-size: 20px;
+}
+
+button
+{
+    font-size: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
