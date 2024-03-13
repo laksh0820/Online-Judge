@@ -4,6 +4,9 @@
     <head>
         <title>Project zetaX</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style.css')}}">
+        <link href="{{ url_for('static',filename='assets/image1.jpg')}}">
+        <link href="{{ url_for('static',filename='assets/image2.jpg')}}">
+        <link href="{{ url_for('static',filename='assets/image3.jpg')}}">
     </head>
     <body>
 
@@ -13,25 +16,31 @@
                 <h4>Welcome to</h4>
                 <h1>Project zetaX</h1>
                 <div>
-                    <button>Sign in</button>
-                    <button>Sign up</button>
+                    <button class="form-button">Sign in</button>
+                    <button class="form-button">Sign up</button>
                 </div>
             </div>
         </header>
 
         <!-- OPTIONS -->
-        <div>
-            <div>
+        <div class="row">
+            <div class="column">
                 <h3>Contestants</h3><br>
-                <img src="./assets/image1.jpg" alt="contestant">
+                <img src="/static/assets/image1.jpg" alt="Contestant">
+                <br>    
+                <button class="redirect-button">Solve Problems</button>
             </div>
-
-            <div>
-                
+            <div class="column">
+                <h3>Online Judge</h3><br>
+                <img src="/static/assets/image2.jpg" alt="Judge">
+                <br>
+                <button class="redirect-button">Post Problems</button>
             </div>
-
-            <div>
-                
+            <div class="column">
+                <h3>Online Judge</h3><br>
+                <img src="/static/assets/image3.jpg" alt="Online IDE">
+                <br>
+                <button class="redirect-button">Open Code Editor</button>
             </div>
         </div>
     </body>
