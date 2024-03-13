@@ -1,0 +1,43 @@
+.text-center
+{
+    text-align: center;
+}
+
+.theme
+{
+    color:#fff;
+    background-color: #000000;
+}
+
+.header-layout
+{
+    height: 50px;
+    padding: 10px 10px;
+}
+
+.footer-theme
+{
+    color:#fff;
+    margin-top: 1000px;
+    padding:10px;
+    height: 100px;
+    background-color: #000000;
+}
+
+form
+{
+    text-align: center;
+    font-size: 20px;
+}
+
+.column
+{
+    width: 50%;
+    float: left;
+}
+
+button
+{
+    margin-top: 50px;
+    font-size: 18px;
+}

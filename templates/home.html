@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Project zetaX</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-home.css')}}">
         <link href="{{ url_for('static',filename='assets/image1.jpg')}}">
         <link href="{{ url_for('static',filename='assets/image2.jpg')}}">
         <link href="{{ url_for('static',filename='assets/image3.jpg')}}">
@@ -11,10 +11,10 @@
     <body>
 
         <!-- HEADER -->
-        <header class="header-theme header-padding">
+        <header class="theme header-padding">
             <div class="text-center">
                 <h4>Welcome to</h4>
-                <h1>Project zetaX</h1>
+                <h1>Online C Programme Evaluator</h1>
                 <div>
                     <button class="form-button">Sign in</button>
                     <button class="form-button">Sign up</button>
@@ -27,21 +27,27 @@
             <div class="column">
                 <h3>Contestants</h3><br>
                 <img src="/static/assets/image1.jpg" alt="Contestant">
-                <br>    
-                <button class="redirect-button">Solve Problems</button>
+                <br>  
+                <a href="/contestant/">Solve Problems</a>
             </div>
             <div class="column">
                 <h3>Online Judge</h3><br>
                 <img src="/static/assets/image2.jpg" alt="Judge">
                 <br>
-                <button class="redirect-button">Post Problems</button>
+                <a href="/judge">Post Problems</a>
             </div>
             <div class="column">
-                <h3>Online Judge</h3><br>
+                <h3>Online IDE</h3><br>
                 <img src="/static/assets/image3.jpg" alt="Online IDE">
                 <br>
-                <button class="redirect-button">Open Code Editor</button>
+                <a href="/onlineIDE/">Open Code Editor</a>
             </div>
         </div>
+
+        <!-- FOOTER -->
+        <footer class="footer-theme">
+            <h3>Project zetaX</h3>
+            <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
+        </footer>
     </body>
 </html>

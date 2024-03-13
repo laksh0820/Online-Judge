@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Project zetaX</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-judge.css')}}">
+    </head>
+    <body>
+
+        <!-- HEADER -->
+        <header class="theme header-layout">
+            <div class="text-center">
+                <h1>Judge</h1>
+            </div>
+        </header>
+
+        <!-- OPTIONS -->
+
+        <form>
+            <div>
+                <p>Problem Title</p>
+                <input text="Problem Title" style="width: 60%;height: 30px;">
+            </div>
+            <div>
+                <p>Problem Desciption</p>
+                <textarea style="width: 50%;height: 200px;padding: 5px 5px;">Write the Problem Desciption here.</textarea>
+            </div>
+            <div class="row">
+                <div class = "column">
+                    <p>Sample Input</p>
+                    <textarea style="padding: 5px 5px;">Write Here</textarea>
+                </div>
+                <div class = "column">
+                    <p>Sample Output</p>
+                    <textarea style="padding: 5px 5px;">Write Here</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class = "column">
+                    <p>Expected Execution Time</p>
+                    <input text="Execution Time">
+                </div>
+                <div class = "column">
+                    <p>Expected Memory</p>
+                    <input text="Execution Memory">
+                </div>
+            </div>
+            <button>Submit</button>
+        </form>
+
+        <!-- FOOTER -->
+        <footer class="footer-theme">
+            <h3>Project zetaX</h3>
+            <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
+        </footer>
+    </body>
+</html>
