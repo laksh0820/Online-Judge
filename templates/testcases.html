@@ -16,38 +16,38 @@
 
         <!-- OPTIONS -->
 
-        <form method="POST">
+        <form>
             <fieldset>
                 <legend>Problem Details</legend>
                     <div>
                         <p>Problem Title</p>
-                        <input text="Problem Title" style="width: 60%;height: 30px;font-size: 20px;" id="title">
+                        <input text="Problem Title" style="width: 60%;height: 30px;font-size: 20px;">
                     </div>
                     <div>
                         <p>Problem Desciption</p>
-                        <textarea style="width: 70%;height: 200px;padding: 5px 5px;" id="description">Write the Problem Desciption here.</textarea>
+                        <textarea style="width: 70%;height: 200px;padding: 5px 5px;">Write the Problem Desciption here.</textarea>
                     </div>
                     <div class="row" style="margin-top: 2%;">
                         <div class = "column" style="margin-left: 25%;">
                             <p>Sample Input</p>
-                            <textarea style="height: 150px;width:300px;padding: 5px 5px;" id="sample_input">Write Here</textarea>
+                            <textarea style="height: 150px;width:300px;padding: 5px 5px;">Write Here</textarea>
                         </div>
                         <div class = "column" style="margin-left: 90px;">
                             <p>Sample Output</p>
-                            <textarea style="height: 150px;width:300px;padding: 5px 5px;" id="sample_output">Write Here</textarea>
+                            <textarea style="height: 150px;width:300px;padding: 5px 5px;">Write Here</textarea>
                         </div>
                     </div>
                     <div class="Constraints">
-                        <label for="Time" id="exp_time">Expected Execution Time</label>
+                        <label for="Time">Expected Execution Time</label>
                         <input type="text" id="Time">
                         <br>
-                        <label for="Space" id="exp_space">Expected Memory</label>
+                        <label for="Space">Expected Memory</label>
                         <input type="text" id="Space">
-                        <!-- <br>
-                        <label for="Testcases">Number of Testcases</label>
-                        <input type="text" id="Testcases"> -->
                         <br>
-                        <input type="Submit" action="/judge/{{user.id}}" method="POST">
+                        <label for="Testcases">Number of Testcases</label>
+                        <input type="text" id="Testcases">
+                        <br>
+                        <button>Enter</button>
                     </div>
             </fieldset>
         </form>
