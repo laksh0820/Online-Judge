@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Project zetaX</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-login.css')}}">
+    </head>
+    <body>
+        <form action="/signin" method="POST">
+            <fieldset>
+                <legend>Sign In</legend>
+
+                <label for="name">Email:</label>
+                <input type="email" name="name">
+
+                <label for="name">Password:</label>
+                <input type="password" name="name">
+
+                <input type="submit" style="display: block;margin: auto;">
+            </fieldset>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Project zetaX</title>
+        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-login.css')}}">
+    </head>
+    <body>
+        <form action="/signup" method="POST">
+            <fieldset>
+                <legend>Sign Up</legend>
+
+                <label for="name">Name:</label>
+                <input type="text" name="name">
+
+                <label for="name">Email:</label>
+                <input type="email" name="name">
+
+                <label for="name">Password:</label>
+                <input type="password" name="name">
+
+                <div class="choice">
+                    <p>Type of User:</p>
+                    
+                    <input type="radio" name="selection" id="check">
+                    <label style="display: inline;">Contestant</label>
+
+                    <input type="radio" name="selection" id="check">
+                    <label style="display: inline;">Judge</label>
+                </div>
+
+                <input type="submit" style="margin-top: 20px;">
+            </fieldset>
+        </form>
+    </body>
+</html>
