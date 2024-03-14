@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+h1
+{
+    font-size: 40px;
+}
+
 .theme
 {
     color:#fff;
@@ -11,7 +16,7 @@
 
 .header-layout
 {
-    height: 50px;
+    height: 80px;
     padding: 10px 10px;
 }
 
@@ -32,12 +37,45 @@ form
 
 .column
 {
-    width: 50%;
+    margin-right: 50px;
     float: left;
 }
 
 button
 {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+textarea
+{
+    resize: none;
+}
+
+legend
+{
+    padding: 10px;
+    font-size: 30px;
+    color: #999;
+    text-align: left;
+}
+
+.Constraints
+{
     margin-top: 50px;
-    font-size: 18px;
+    margin-left: 15%;
+    text-align: justify;
+    float: left;
+}
+
+label
+{
+    font-size: 17px;
+    display: block;
+}
+
+input
+{
+    padding: 10px;
+    margin-bottom: 20px;
 }
