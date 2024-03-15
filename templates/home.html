@@ -13,14 +13,23 @@
         <!-- HEADER -->
         <header class="theme header-padding">
             <div class="text-center">
-                <h4>Welcome to</h4>
-                <h1>Online C Programme Evaluator</h1>
-                <form action="/signin" method="GET">
-                    <input type="submit" value="Sign In" class="form-button">
-                </form>
-                <form action="/signup" method="GET">
-                    <input type="submit" value="Sign Up" class="form-button">
-                </form>
+                {% if user == None %}
+                    <h4>Welcome to</h4>
+                    <h1>Online C Programme Evaluator</h1>
+                    <form action="/signin" method="GET">
+                        <input type="submit" value="Sign In" class="form-button">
+                    </form>
+                    <form action="/signup" method="GET">
+                        <input type="submit" value="Sign Up" class="form-button">
+                    </form>
+                {% else %}
+                    <h1>Online C Programme Evaluator</h1>
+                    <h4>Welcome</h4>
+                    <h4>{{user.name}}</h4>
+                    <form action='/'>
+                        <input type="submit" value="Log Out" name="logout">
+                    </form>
+                {% endif %}
             </div>
         </header>
 
