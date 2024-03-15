@@ -2,6 +2,7 @@ from flask import Flask,render_template,redirect,request
 from flask_sqlalchemy import SQLAlchemy
 
 started_app = 0
+fun = 0
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
