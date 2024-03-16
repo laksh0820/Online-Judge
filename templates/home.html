@@ -2,11 +2,12 @@
 
 <html>
     <head>
-        <title>Project zetaX</title>
+        <title>Project ZetaX</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-home.css')}}">
         <link href="{{ url_for('static',filename='assets/image1.jpg')}}">
         <link href="{{ url_for('static',filename='assets/image2.jpg')}}">
         <link href="{{ url_for('static',filename='assets/image3.jpg')}}">
+        <link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
     </head>
     <body>
 
@@ -16,10 +17,10 @@
                 {% if user == None %}
                     <h4>Welcome to</h4>
                     <h1>Online C Programme Evaluator</h1>
-                    <form action="/signin" method="GET">
+                    <form action="/templates/signin.html" method="GET">
                         <input type="submit" value="Sign In" class="form-button">
                     </form>
-                    <form action="/signup" method="GET">
+                    <form action="/templates/signup.html" method="GET">
                         <input type="submit" value="Sign Up" class="form-button">
                     </form>
                 {% else %}
@@ -39,25 +40,25 @@
                 <h3>Contestants</h3><br>
                 <img src="/static/assets/image1.jpg" alt="Contestant">
                 <br>  
-                <a href="/contestant/">Solve Problems</a>
+                <a href="/templates/contestant.html">Solve Problems</a>
             </div>
             <div class="column">
                 <h3>Online Judge</h3><br>
                 <img src="/static/assets/image2.jpg" alt="Judge">
                 <br>
-                <a href="/judge">Post Problems</a>
+                <a href="/templates/judge.html">Post Problems</a>
             </div>
             <div class="column">
                 <h3>Online IDE</h3><br>
                 <img src="/static/assets/image3.jpg" alt="Online IDE">
                 <br>
-                <a href="/onlineIDE/">Open Code Editor</a>
+                <a href="/templates/onlineIDE.html">Open Code Editor</a>
             </div>
         </div>
 
         <!-- FOOTER -->
         <footer class="footer-theme">
-            <h3>Project zetaX</h3>
+            <h3>Project ZetaX</h3>
             <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
         </footer>
     </body>

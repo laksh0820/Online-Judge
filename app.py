@@ -35,7 +35,7 @@ class Problem(db.Model):
 def home(): 
     return render_template('home.html',user=None)
 
-@app.route('/signin',methods=['GET','POST'])
+@app.route('/templates/signin.html',methods=['GET','POST'])
 def signin():
     if request.method == 'POST':
         curr_user = user.query.get_or_404(request.form['name'])
@@ -49,7 +49,7 @@ def signin():
     else:
        return render_template('signin.html')
 
-@app.route('/signup',methods=['GET','POST'])
+@app.route('/templates/signup.html',methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
         newUser = user()
@@ -66,7 +66,7 @@ def signup():
     else:
         return render_template('signup.html') 
 
-@app.route('/judge',methods = ['GET','POST'])
+@app.route('/templates/judge.html',methods = ['GET','POST'])
 def post_problems():
     # curr_user = user.query.get_or_404(request.form['name'])
 
@@ -88,13 +88,13 @@ def post_problems():
     else:
         return render_template('judge.html')
 
-@app.route('/contestant')
-def solve_problems():
-    pass
+# @app.route('/templates/contestant.html', methods= ['GET'])
+# def solve_problems():
+#     pass
 
-@app.route('/onlineIDE')
-def online_coding():
-    pass
+# @app.route('/onlineIDE')
+# def online_coding():
+#     pass
 
 if __name__ == '__main__':
     app.run(debug=True)
