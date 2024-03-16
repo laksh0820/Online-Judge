@@ -67,7 +67,7 @@ def signup():
     else:
         return render_template('signup.html') 
 
-@app.route('/judge',methods = ['GET','POST'])
+@app.route('/templates/judge.html',methods = ['GET','POST'])
 def post_problems():
     # curr_user = user.query.get_or_404(request.form['name'])
 
