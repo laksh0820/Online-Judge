@@ -1,24 +1,27 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>Project ZetaX</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-login.css')}}">
         <link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
     </head>
     <body>
-        <form action="/signup" method="POST">
+        {% block content %}
+        <br/><br/><br/>
+        <form action="/signup" method="POST" class="shadow p-3 mb-5 bg-body rounded">
             <fieldset>
                 <legend>Sign Up</legend>
 
-                <label for="name">Name:</label>
-                <input type="text" name="name">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="name">
 
-                <label for="email">Email:</label>
-                <input type="email" name="email">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="email">
 
-                <label for="password">Password:</label>
-                <input type="password" name="password">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" name="password">
 
                 <div class="choice">
                     <p>Type of User:</p>
@@ -29,9 +32,10 @@
                     <input type="radio" name="selection" id="check">
                     <label style="display: inline;">Judge</label>
                 </div>
-
-                <input type="submit" style="margin-top: 20px;">
+                <br/>
+                <input type="submit" class="btn btn-secondary">
             </fieldset>
         </form>
+        {% endblock %}
     </body>
 </html>

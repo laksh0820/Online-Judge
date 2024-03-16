@@ -1,13 +1,15 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>Project ZetaX</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-judge.css')}}">
         <link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
     </head>
     <body>
-
+        {% block content %}
+        <br/>
         <!-- HEADER -->
         <header class="theme header-layout">
             <div class="text-center">
@@ -16,39 +18,39 @@
         </header>
 
         <!-- OPTIONS -->
-
-        <form action="/judge" method="POST">
+        <br/><br/>
+        <form action="/judge" method="POST" class="shadow p-3 mb-5 bg-body rounded">
             <fieldset>
                 <legend>Problem Details</legend>
                     <div>
                         <p>Problem Title</p>
-                        <input text="Problem Title" style="width: 60%;height: 30px;font-size: 20px;" name="title">
+                        <input text="Problem Title" class="form-control" name="title">
                     </div>
                     <div>
                         <p>Problem Desciption</p>
-                        <textarea style="width: 70%;height: 200px;padding: 5px 5px;" name="description">Write the Problem Desciption here.</textarea>
+                        <textarea class="form-control" name="description">Write the Problem Desciption here.</textarea>
                     </div>
                     <div class="row" style="margin-top: 2%;">
                         <div class = "column" style="margin-left: 25%;">
                             <p>Sample Input</p>
-                            <textarea style="height: 150px;width:300px;padding: 5px 5px;" name="sample_input">Write Here</textarea>
+                            <textarea class="form-control" name="sample_input">Write Here</textarea>
                         </div>
                         <div class = "column" style="margin-left: 90px;">
                             <p>Sample Output</p>
-                            <textarea style="height: 150px;width:300px;padding: 5px 5px;" name="sample_output">Write Here</textarea>
+                            <textarea class="form-control" name="sample_output">Write Here</textarea>
                         </div>
                     </div>
                     <div class="Constraints">
-                        <label for="Time">Expected Execution Time</label>
-                        <input type="text" name="exp_time">
+                        <label for="Time" class="form-label">Expected Execution Time</label>
+                        <input type="text" name="exp_time" class="form-control">
                         <br>
-                        <label for="Space">Expected Memory</label>
-                        <input type="text" name="exp_space">
+                        <label for="Space" class="form-label">Expected Memory</label>
+                        <input type="text" name="exp_space" class="form-control">
                         <!-- <br>
                         <label for="Testcases">Number of Testcases</label>
                         <input type="text" id="Testcases"> -->
                         <br>
-                        <input type="Submit">
+                        <input type="Submit" class="btn btn-secondary">
                     </div>
             </fieldset>
         </form>
@@ -58,5 +60,7 @@
             <h3>Project ZetaX</h3>
             <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
         </footer>
+
+        {% endblock %}
     </body>
 </html>

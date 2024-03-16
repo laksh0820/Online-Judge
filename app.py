@@ -35,7 +35,7 @@ class Problem(db.Model):
 def home(): 
     return render_template('home.html',user=None)
 
-@app.route('/templates/signin.html',methods=['GET','POST'])
+@app.route('/signin',methods=['GET','POST'])
 def signin():
     if request.method == 'POST':
         curr_user = user.query.get_or_404(request.form['name'])
@@ -49,7 +49,7 @@ def signin():
     else:
        return render_template('signin.html')
 
-@app.route('/templates/signup.html',methods=['GET','POST'])
+@app.route('/signup',methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
         newUser = user()
@@ -66,7 +66,7 @@ def signup():
     else:
         return render_template('signup.html') 
 
-@app.route('/templates/judge.html',methods = ['GET','POST'])
+@app.route('/judge',methods = ['GET','POST'])
 def post_problems():
     # curr_user = user.query.get_or_404(request.form['name'])
 
