@@ -90,7 +90,11 @@ def post_problems():
 
 # @app.route('/templates/contestant.html', methods= ['GET'])
 # def solve_problems():
-#     pass
+    
+
+#     if request.method == 'GET':
+
+    
 
 # @app.route('/onlineIDE')
 # def online_coding():
