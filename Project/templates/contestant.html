@@ -2,11 +2,20 @@
 
 {% block content %}
     <table>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Problem ID</th>
+                <th>Problem Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for id in ProblemIDs %}
+            <tr>
+                <td>{{id}}</td>
+                <td><a href="{{ url_for('static' , filename='Problems/{{id}}')}}">{{ProblemTitles[loop.index0]}}</a></td>
+            </tr>
+        </tbody>
+        <tfoot></tfoot>
     </table>
 
 {% endblock %}
