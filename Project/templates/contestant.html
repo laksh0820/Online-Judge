@@ -11,8 +11,8 @@
         <tbody>
             {% for id in ProblemIDs %}
             <tr>
-                <td>{{ProblemIDs[loop.index0]}}</td>
-                <td><a href="/problem">{{ProblemTitles[loop.index0]}}</a></td>
+                <td>{{id}}</td>
+                <td><a href="/problem/{{id}}">{{ProblemTitles[loop.index0]}}</a></td>
             </tr>
             {% endfor %}
         </tbody>

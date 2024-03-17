@@ -103,12 +103,23 @@ def post_problems():
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 def solve_problems():
     if request.method == 'GET':
-        problem_ids = [Problem.query.with_entities(Problem.id).all()]
-        problem_titles = [Problem.query.with_entities(Problem.title).all()]
-        return render_template('contestant.html' , ProblemIDs = problem_ids , ProblemTitles = problem_titles)
+        problem_ids = Problem.query.with_entities(Problem.id).all()
+        pblm_id_list = [x[0] for x in problem_ids]
+        problem_titles = Problem.query.with_entities(Problem.title).all()
+        pblm_title_list = [x[0] for x in problem_titles]
+        return render_template('contestant.html' , ProblemIDs = pblm_id_list , ProblemTitles = pblm_title_list)
     else:
         return render_template('contestant.html')
     
+@app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
+def display_problem(problem_id):
+    if request.method == 'GET':
+        problem = Problem.query.filter(Problem.id == problem_id).only_return_tuples(True).first()
+        
+        return render_template('problem.html' , )
+    else :
+        return render_template('problem.html')
+
 # @app.route('/onlineIDE')
 # def online_coding():
 #     pass
