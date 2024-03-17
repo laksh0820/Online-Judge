@@ -7,14 +7,14 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin,login_user,login_required,LoginManager,current_user,logout_user
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_BINDS'] = {'problems':'sqlite:///problem_set.db'}   
 app.config['SECRET_KEY'] = 'projectzetaxksdkar37ro8hf83fh3892hmfijw38fh'
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'signin'
+login_manager.login_view = '/signin'
 
 @login_manager.user_loader
 def load_user(id):
@@ -77,7 +77,7 @@ def signin():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            if check_password_hash(user.password,form.password.data):
+            if check_password_hash(user.password,str(form.password.data)):
                 login_user(user)
                 flash("Logged in Successfully")
                 return redirect(url_for('signin'))
@@ -100,7 +100,7 @@ def signup():
             newUser = User()
             newUser.name = form.name.data
             newUser.email = form.email.data
-            newUser.password = generate_password_hash(form.password.data,"sha256")
+            newUser.password = generate_password_hash(str(form.password.data),"sha256")
             newUser.type = form.type.data
             try:
                 db.session.add(newUser)
@@ -160,14 +160,13 @@ def post_problems():
 
     return render_template('judge.html',form=form)
 
-# @app.route('/contestant', methods= ['GET' , 'POST'])
-# @login_required                                         # Cause You suck
-# def solve_problems():
-#     if request.method == 'POST':
-#         pass
-#     else:
-#         problems_list = Problem.query.all()
-#         return render_template('contestant.html' , ProblemSet = problems_list)
+@app.route('/contestant', methods= ['GET' , 'POST'])   
+def solve_problems():
+    if request.method == 'GET':
+        # problems_list = Problem.query.all()
+        return render_template('contestant.html' , ProblemSet = [])
+    else:
+        return render_template('contestant.html')
     
 # @app.route('/onlineIDE')
 # def online_coding():
