@@ -35,7 +35,7 @@ class Problem(db.Model):
 def home(): 
     return render_template('home.html',user=None)
 
-@app.route('/signin',methods=['GET','POST'])
+@app.route('/signin',methods=['GET','POST'])    # why is POST needed
 def signin():
     if request.method == 'POST':
         curr_user = user.query.get_or_404(request.form['name'])
@@ -88,14 +88,14 @@ def post_problems():
     else:
         return render_template('judge.html')
 
-# @app.route('/templates/contestant.html', methods= ['GET'])
-# def solve_problems():
+@app.route('/contestant', methods= ['GET' , 'POST'])    # something wrong with query command returning none
+def solve_problems():
+    if request.method == 'GET':
+        problems_list = Problem.query.all()
+        return render_template('contestant.html' , ProblemSet = problems_list)
+    else:
+        return render_template('contestant.html')
     
-
-#     if request.method == 'GET':
-
-    
-
 # @app.route('/onlineIDE')
 # def online_coding():
 #     pass
