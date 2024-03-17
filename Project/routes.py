@@ -9,6 +9,23 @@ from Project.models import Problem,User
 def home(): 
     return render_template('home.html',user=None)
 
+def judge_required(inner_func):
+    def wrapped_function_judge(*args,**kwargs):
+        if (current_user.is_authenticated) and (current_user.type != 'Judge'):
+            flash("Please log in as Judge to access this page",'error')
+            return redirect(url_for('home'))
+        return inner_func(*args,**kwargs)
+    return wrapped_function_judge
+
+def contestant_required(inner_func):
+    def wrapped_function_contestant(*args,**kwargs):
+        if (current_user.is_authenticated) and (current_user.type != 'Contestant'):
+            flash("Please log in as Contestant to access this page",'error')
+            return redirect(url_for('home'))
+        return inner_func(*args,**kwargs)
+    return wrapped_function_contestant
+
+
 # Sign in to an existing user
 @app.route('/signin',methods=['GET','POST'])
 def signin():
@@ -72,9 +89,9 @@ def logout():
 # Post a new Problem
 @app.route('/judge',methods = ['GET','POST'])
 @login_required
+@judge_required
 def post_problems():
     form = ProblemForm()
-
     if form.validate_on_submit():
         newProblem = Problem()
         newProblem.title = form.title.data
@@ -101,6 +118,8 @@ def post_problems():
     return render_template('judge.html',form=form)
 
 @app.route('/contestant', methods= ['GET' , 'POST'])   
+@login_required
+@contestant_required
 def solve_problems():
     if request.method == 'GET':
         # problems_list = Problem.query.all()

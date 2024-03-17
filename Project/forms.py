@@ -7,7 +7,7 @@ class SignUpForm(FlaskForm):
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
     password = PasswordField("Password",validators=[DataRequired(),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype")])
     confirm_password = PasswordField("Confirm-Password",validators=[DataRequired()])
-    type = RadioField("Type",validators=[DataRequired()],choices=[('Contestants','Contestants'),('Judge','Judge')])
+    type = RadioField("Type",validators=[DataRequired()],choices=[('Contestant','Contestant'),('Judge','Judge')])
     submit = SubmitField("Submit")
 
 class SignInForm(FlaskForm):
@@ -22,4 +22,5 @@ class ProblemForm(FlaskForm):
     sample_output = TextAreaField("Sample Output",validators=[DataRequired()])
     exe_time = IntegerField("Expected Execution Time",validators=[DataRequired()])
     exe_space = IntegerField("Expected Execution Space",validators=[DataRequired()])
+    nTestcases = IntegerField("Number of Testcases",validators=[DataRequired()])
     submit = SubmitField("Submit")  

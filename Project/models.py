@@ -29,5 +29,6 @@ class Problem(db.Model):
     exe_time = db.Column(db.Integer, nullable=False)
     exe_space = db.Column(db.Integer, nullable=False)
 
+
     def __repr__(self):
         return f"{self.title} - {self.description}"
