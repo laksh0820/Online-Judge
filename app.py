@@ -136,11 +136,11 @@ def post_problems():
 
 @app.route('/contestant', methods= ['GET' , 'POST'])    # Cause You suck
 def solve_problems():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        pass
+    else:
         problems_list = Problem.query.all()
         return render_template('contestant.html' , ProblemSet = problems_list)
-    else:
-        return render_template('contestant.html')
     
 # @app.route('/onlineIDE')
 # def online_coding():
