@@ -11,16 +11,26 @@
 
 .header-padding
 {
-    padding: 80px 10px;
+    padding: 10px 10px;
 }
 
 .footer-theme
 {
     color:#fff;
     margin-top:50px;
+    margin-bottom: 10px;
     padding:10px;
     height: 100px;
     background-color: #000000;
+}
+
+.card-img-top {
+    width: 70%;
+    height: 12vw;
+    margin: auto;
+    margin-top: 10px;
+    border-color: #545353;  
+    object-fit: scale-down;
 }
 
 h1

@@ -1,41 +1,47 @@
 {% extends 'base.html' %}
 
-<!DOCTYPE html>
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+        {{ message }}
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 
-<html>
-    <head>
-        <title>Project ZetaX</title>
-        <link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
-    </head>
-    <body>
-        {% block content %}
+{% block content %}
+
         <br/><br/><br/>
-        <form action="/signup" method="POST" class="shadow p-3 mb-5 bg-body rounded">
-            <fieldset>
+        <form action='/signup' method="POST" class="shadow p-3 mb-5 bg-body rounded">
                 <legend>Sign Up</legend>
+                {{ form.hidden_tag() }}
 
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" name="name">
-
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" name="email">
-
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" name="password">
-
-                <div class="choice">
-                    <p>Type of User:</p>
-                    
-                    <input type="radio" name="selection" id="check">
-                    <label style="display: inline;">Contestant</label>
-
-                    <input type="radio" name="selection" id="check">
-                    <label style="display: inline;">Judge</label>
-                </div>
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
                 <br/>
-                <input type="submit" class="btn btn-secondary">
-            </fieldset>
+
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+                <br/>
+
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+                <br/>
+
+                {{ form.confirm_password.label(class="form-label") }}
+                {{ form.confirm_password(class="form-control") }}
+                <br/>
+
+                <p class="form-label">Type of User</p>
+                    
+                {% for subfield in form.type %}
+                        {{ subfield }}
+                        {{ subfield.label }}
+                        <br/>
+                {% endfor %}
+
+                <br/>   
+                
+                {{ form.submit(class="btn btn-secondary") }}
+
         </form>
-        {% endblock %}
-    </body>
-</html>
+
+{% endblock %}

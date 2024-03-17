@@ -4,7 +4,7 @@
 {% block content %}
         <!-- HEADER -->
         <br/>
-        <header class="theme header-padding">
+        <header class="theme header-padding rounded">
             <div class="text-center">
                 {% if user == None %}
                     <h4>Welcome to</h4>
@@ -21,31 +21,41 @@
         </header>
 
         <!-- OPTIONS -->
-        <div class="row">
-            <div class="column">
-                <h3>Contestants</h3><br>
-                <img src="/static/assets/image1.jpg" alt="Contestant">
-                <br>  
-                <a href="/contestant">Solve Problems</a>
-            </div>
-            <div class="column">
-                <h3>Online Judge</h3><br>
-                <img src="/static/assets/image2.jpg" alt="Judge">
-                <br>
-                <a href="/judge">Post Problems</a>
-            </div>
-            <div class="column">
-                <h3>Online IDE</h3><br>
-                <img src="/static/assets/image3.jpg" alt="CodeSpace">
-                <br>
-                <a href="/onlineIDE">Online IDE</a>
-            </div>
-        </div>
 
-        <!-- FOOTER -->
-        <footer class="footer-theme">
-            <h3>Project ZetaX</h3>
-            <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+              <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <img src="/static/assets/image1.jpg" class="card-img-top img-thumbnail" alt="Contestant">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="/contestant">Contestant</a></h5>
+                  <p class="card-text">Solve Problems to upgrade your Coding skills</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <img src="/static/assets/image2.jpg" class="card-img-top img-thumbnail" alt="Judge">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="/judge">Judge</a></h5>
+                  <p class="card-text">Post problems for others to see using our onlineIDE</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <img src="/static/assets/image3.jpg" class="card-img-top img-thumbnail" alt="CodeSpace">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="/onlineIDE">Online IDE</a></h5>
+                  <p class="card-text">Use our onlineIDE to run youe C programme</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <!-- FOOTER -->
+        <footer class="footer-theme rounded">
+          <h3>Project ZetaX</h3>
+          <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
         </footer>
 
 {% endblock %}

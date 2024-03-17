@@ -1,18 +1,11 @@
 {% extends 'base.html' %}
 
-<!DOCTYPE html>
+{% block content %}
 
-<html>
-    <head>
-        <title>Project ZetaX</title>
-        <link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
-    </head>
-    <body>
-        {% block content %}
         <br/>
         <!-- HEADER -->
-        <header class="theme header-layout">
-            <div class="text-center">
+        <header class="theme header-layout rounded" style="height: 100px;">
+            <div class="text-center" style="padding-top: 13px;padding-bottom: 10px;">
                 <h1>Judge</h1>
             </div>
         </header>
@@ -27,17 +20,18 @@
                         <input text="Problem Title" class="form-control" name="title">
                     </div>
                     <div>
-                        <p>Problem Desciption</p>
-                        <textarea class="form-control" name="description">Write the Problem Desciption here.</textarea>
+                        <p style="margin-top: 20px;">Problem Desciption</p>
+                        <textarea class="form-control" name="description" style="height: 200px;margin-bottom:30px;">Write the Problem Desciption here.</textarea>
                     </div>
-                    <div class="row" style="margin-top: 2%;">
-                        <div class = "column" style="margin-left: 25%;">
+                    <div class="form-control" style="margin-top: 20px; margin-bottom: 20px;">
+                        <div>
                             <p>Sample Input</p>
-                            <textarea class="form-control" name="sample_input">Write Here</textarea>
+                            <textarea class="form-control" name="sample_input" style="height: 100px;">Write Here</textarea>
                         </div>
-                        <div class = "column" style="margin-left: 90px;">
+                        <br/>
+                        <div>
                             <p>Sample Output</p>
-                            <textarea class="form-control" name="sample_output">Write Here</textarea>
+                            <textarea class="form-control" name="sample_output" style="height: 100px;">Write Here</textarea>
                         </div>
                     </div>
                     <div class="Constraints">
@@ -56,11 +50,9 @@
         </form>
 
         <!-- FOOTER -->
-        <footer class="footer-theme">
+        <footer class="footer-theme rounded">
             <h3>Project ZetaX</h3>
             <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
         </footer>
 
-        {% endblock %}
-    </body>
-</html>
+{% endblock %}
