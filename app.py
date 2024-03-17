@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "/signin"
+login_manager.login_view = '/signin'
 
 @login_manager.user_loader
 def load_user(id):
@@ -23,8 +23,8 @@ def load_user(id):
 class SignUpForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
-    password = PasswordField("Password",validators=[DataRequired()])
-    confirm_password = PasswordField("Confirm-Password",validators=[DataRequired(),EqualTo('password',message="Confirm Password doesn't match the Password.")])
+    password = PasswordField("Password",validators=[DataRequired(),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype")])
+    confirm_password = PasswordField("Confirm-Password",validators=[DataRequired()])
     type = RadioField("Type",validators=[DataRequired()],choices=[('Contestants','Contestants'),('Judge','Judge')])
     submit = SubmitField("Submit")
 
@@ -163,8 +163,8 @@ def post_problems():
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 def solve_problems():
     if request.method == 'GET':
-        problem_ids = Problem.query.with_entities(Problem.id).all()
-        problem_titles = Problem.query.with_entities(Problem.title).all()
+        problem_ids = db.session.query(Problem.id).all()
+        problem_titles = db.session.query(Problem.title).all()
         return render_template('contestant.html' , ProblemIDs = problem_ids , ProblemTitles = problem_titles)
     else:
         return render_template('contestant.html')
