@@ -60,7 +60,7 @@ class Problem(db.Model):
 def home(): 
     return render_template('home.html',user=None)
 
-@app.route('/signin',methods=['GET','POST'])    # why is POST needed
+@app.route('/signin',methods=['GET','POST'])
 def signin():
     form = SignInForm()
 
@@ -134,13 +134,13 @@ def post_problems():
     else:
         return render_template('judge.html')
 
-@app.route('/contestant', methods= ['GET' , 'POST'])    # something wrong with query command returning none
+@app.route('/contestant', methods= ['GET' , 'POST'])    # Cause You suck
 def solve_problems():
-    if request.method == 'GET':
+    if request.method == 'POST':
+        pass
+    else:
         problems_list = Problem.query.all()
         return render_template('contestant.html' , ProblemSet = problems_list)
-    else:
-        return render_template('contestant.html')
     
 # @app.route('/onlineIDE')
 # def online_coding():

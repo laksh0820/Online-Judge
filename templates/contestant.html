@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProblemSet</title>
-    <link rel="stylesheet" href="{{ url_for('static' , filename = 'CSS/style-contestant.css')}}">
-    <link rel="icon" type = "image/x-icon" href="{{ url_for('images' , filename = 'Icon-for-Webpages.ico')}}">
-    <p>Hello World</p>
-</head>
+{% extends 'base.html' %}
 
-<body>
+{% block content %}
+
     <div class="Nav_Bar" id="Navigation_Bar">
         <ul>
             <li><a href="/templates/home.html">Home</a></li>
@@ -23,5 +15,5 @@
             <td></td>
         </tr>
     </table>
-</body>
-</html>
+
+{% endblock %}
