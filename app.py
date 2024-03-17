@@ -102,7 +102,7 @@ def signup():
         form.type.data = ''
 
         flash("User Added Successfully!!")
-        return redirect(url_for('signup'))
+        return redirect(url_for('signup'))  ### should be redirected to home
 
     return render_template('signup.html',form = form)
 
