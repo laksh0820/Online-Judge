@@ -11,9 +11,10 @@
         <tbody>
             {% for id in ProblemIDs %}
             <tr>
-                <td>{{id}}</td>
-                <td><a href="{{ url_for('static' , filename='Problems/{{id}}')}}">{{ProblemTitles[loop.index0]}}</a></td>
+                <td>{{ProblemIDs[loop.index0]}}</td>
+                <td><a href="/problem">{{ProblemTitles[loop.index0]}}</a></td>
             </tr>
+            {% endfor %}
         </tbody>
         <tfoot></tfoot>
     </table>
