@@ -5,48 +5,60 @@
         <br/>
         <!-- HEADER -->
         <header class="theme header-layout rounded" style="height: 100px;">
-            <div class="text-center" style="padding-top: 13px;padding-bottom: 10px;">
+                <div class="text-center" style="padding-top: 13px;padding-bottom: 10px;">
                 <h1>Judge</h1>
-            </div>
+                </div>
         </header>
+
+        <br/>
+
+        {% for message in get_flashed_messages(with_categories = True) %}
+                {% if message|first == "error" %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                {{ message[1] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                {% else %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                {{ message[1] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                {% endif %}
+        {% endfor %}
 
         <!-- OPTIONS -->
         <br/><br/>
         <form action="/judge" method="POST" class="shadow p-3 mb-5 bg-body rounded">
-            <fieldset>
-                <legend>Problem Details</legend>
-                    <div>
-                        <p>Problem Title</p>
-                        <input text="Problem Title" class="form-control" name="title">
-                    </div>
-                    <div>
-                        <p style="margin-top: 20px;">Problem Desciption</p>
-                        <textarea class="form-control" name="description" style="height: 200px;margin-bottom:30px;">Write the Problem Desciption here.</textarea>
-                    </div>
-                    <div class="form-control" style="margin-top: 20px; margin-bottom: 20px;">
-                        <div>
-                            <p>Sample Input</p>
-                            <textarea class="form-control" name="sample_input" style="height: 100px;">Write Here</textarea>
-                        </div>
-                        <br/>
-                        <div>
-                            <p>Sample Output</p>
-                            <textarea class="form-control" name="sample_output" style="height: 100px;">Write Here</textarea>
-                        </div>
-                    </div>
-                    <div class="Constraints">
-                        <label for="Time" class="form-label">Expected Execution Time</label>
-                        <input type="text" name="exp_time" class="form-control">
-                        <br>
-                        <label for="Space" class="form-label">Expected Memory</label>
-                        <input type="text" name="exp_space" class="form-control">
-                        <!-- <br>
-                        <label for="Testcases">Number of Testcases</label>
-                        <input type="text" id="Testcases"> -->
-                        <br>
-                        <input type="Submit" class="btn btn-secondary">
-                    </div>
-            </fieldset>
+
+                <h2>Problem Details</h2><br/>
+
+                    {{ form.hidden_tag() }}
+
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control",placeholder="Title") }}
+                    <br/>
+
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control",placeholder="Problem Statement goes here ...",style="height:200px") }}
+                    <br/>
+
+                    {{ form.sample_input.label(class="form-label") }}
+                    {{ form.sample_input(class="form-control",placeholder="Sample input",style="height:100px") }}
+
+                    {{ form.sample_output.label(class="form-label") }}
+                    {{ form.sample_output(class="form-control",placeholder="Sample Output",style="height:100px") }}
+                    
+                    <br/>
+
+                    {{ form.exe_time.label(class="form-label") }}
+                    {{ form.exe_time(class="form-control",placeholder="Expected Time Complexity (in seconds)") }}
+                    <br/>
+
+                    {{ form.exe_space.label(class="form-label") }}
+                    {{ form.exe_space(class="form-control",placeholder="Expected Space Complexity (in Kilobytes)") }}
+                    <br/>
+
+                    {{ form.submit(class="btn btn-secondary") }}
         </form>
 
         <!-- FOOTER -->
