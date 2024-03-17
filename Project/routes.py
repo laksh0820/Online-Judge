@@ -103,8 +103,9 @@ def post_problems():
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 def solve_problems():
     if request.method == 'GET':
-        # problems_list = Problem.query.all()
-        return render_template('contestant.html' , ProblemSet = [])
+        problem_ids = Problem.query.with_entities(Problem.id).all()
+        problem_titles = Problem.query.with_entities(Problem.title).all()
+        return render_template('contestant.html' , ProblemIDs = problem_ids , ProblemTitles = problem_titles)
     else:
         return render_template('contestant.html')
     
