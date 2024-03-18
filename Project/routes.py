@@ -133,9 +133,9 @@ def solve_problems():
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
 def display_problem(problem_id):
     if request.method == 'GET':
-        problem = Problem.query.filter(Problem.id == problem_id).only_return_tuples(True).first()
-        
-        return render_template('problem.html' , )
+        problem = Problem.query.filter(Problem.id == problem_id).all()
+        pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
+        return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
     else :
         return render_template('problem.html')
 
