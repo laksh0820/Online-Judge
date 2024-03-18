@@ -15,6 +15,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.String(100), nullable=False,unique=True)
     password = db.Column(db.String(100), nullable=False)
     type = db.Column(db.String(100), nullable=False)
+    problems = db.relationship('Problem',backref='user')
     
     def __repr__(self):
         return f"{self.name} - {self.type}"
@@ -28,6 +29,7 @@ class Problem(db.Model):
     sample_output = db.Column(db.String(100), nullable=False)
     exe_time = db.Column(db.Integer, nullable=False)
     exe_space = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
     def __repr__(self):

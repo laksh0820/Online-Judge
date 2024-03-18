@@ -1,4 +1,4 @@
-from flask import render_template,redirect,request,flash,url_for
+from flask import render_template,redirect,request,flash,url_for,make_response
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,current_user,logout_user
 from Project import app,db
@@ -15,6 +15,7 @@ def judge_required(inner_func):
             flash("Please log in as Judge to access this page",'error')
             return redirect(url_for('home'))
         return inner_func(*args,**kwargs)
+    wrapped_function_judge.__name__ = inner_func.__name__
     return wrapped_function_judge
 
 def contestant_required(inner_func):
@@ -23,6 +24,7 @@ def contestant_required(inner_func):
             flash("Please log in as Contestant to access this page",'error')
             return redirect(url_for('home'))
         return inner_func(*args,**kwargs)
+    wrapped_function_contestant.__name__ = inner_func.__name__
     return wrapped_function_contestant
 
 
@@ -30,12 +32,12 @@ def contestant_required(inner_func):
 @app.route('/signin',methods=['GET','POST'])
 def signin():
     form = SignInForm()
-
+         
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             if check_password_hash(user.password,str(form.password.data)):
-                login_user(user)
+                login_user(user,remember=form.remember_me.data)
                 flash("Logged in Successfully")
                 return redirect(url_for('signin'))
             else:
@@ -100,6 +102,7 @@ def post_problems():
         newProblem.sample_output = form.sample_output.data
         newProblem.exe_time = form.exe_time.data
         newProblem.exe_space = form.exe_space.data
+        newProblem.user_id = current_user.id
 
         try:
             db.session.add(newProblem)
@@ -117,6 +120,64 @@ def post_problems():
 
     return render_template('judge.html',form=form)
 
+# To show the problems created by the current user(Judge)
+@app.route('/show_judge_problems/<int:id>',methods=['GET','POST'])
+@login_required
+@judge_required
+def show_judge_problems(id):
+    judge = User.query.get_or_404(id)
+    return render_template('show_judge_problems.html',problems=judge.problems)
+
+# To modify the problems created by the current user(Judge)
+@app.route('/modify_problem/<int:id>',methods=['GET','POST'])
+@login_required
+@judge_required
+def modify_problem(id):
+    problem = Problem.query.get_or_404(id)
+    form = ProblemForm()
+
+    if form.validate_on_submit():
+        problem.title = form.title.data
+        problem.description = form.description.data
+        problem.sample_input = form.sample_input.data
+        problem.sample_output = form.sample_output.data
+        problem.exe_time = form.exe_time.data
+        problem.exe_space = form.exe_space.data
+        problem.user_id = current_user.id
+
+        try:
+            db.session.commit()
+            flash("Problem updated successfully")
+        except:
+            flash("Unable to update the Problem",'error')
+        
+        return render_template('show_judge_problems.html',problems=current_user.problems)
+    
+    form.title.data=problem.title
+    form.description.data=problem.description
+    form.sample_input.data=problem.sample_input
+    form.sample_output.data=problem.sample_output
+    form.exe_time.data=problem.exe_time
+    form.exe_space.data=problem.exe_space  
+    return render_template('modify_problem.html',form=form,current_problem=problem)
+
+# To delete the problems created by the current user(Judge)
+@app.route('/delete_problem/<int:id>',methods=['GET','POST'])
+@login_required
+@judge_required
+def delete_problem(id):
+    problem = Problem.query.get_or_404(id)
+
+    try:
+        db.session.delete(problem)
+        db.session.commit()
+
+        flash("Successfully deleted")
+
+        return render_template('show_judge_problems.html',problems=current_user.problems)
+    except:
+        flash("Oops! There is a problem in deleting this problem. Try Again")
+
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 @login_required
 @contestant_required
@@ -131,11 +192,13 @@ def solve_problems():
         return render_template('contestant.html')
     
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
+@login_required
+@contestant_required
 def display_problem(problem_id):
     if request.method == 'GET':
         problem = Problem.query.filter(Problem.id == problem_id).only_return_tuples(True).first()
         
-        return render_template('problem.html' , )
+        return render_template('problem.html')
     else :
         return render_template('problem.html')
 

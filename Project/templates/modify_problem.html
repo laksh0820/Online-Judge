@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for message in get_flashed_messages(with_categories = True) %}
+    {% if message|first == "error" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+    {% else %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+    {% endif %}
+    {% endfor %}
+
+    <!-- OPTIONS -->
+    <br/><br/>
+    <form action="/modify_problem/{{current_problem.id}}" method="POST" class="shadow p-3 mb-5 bg-body rounded">
+
+            <h2>Problem Details</h2><br/>
+
+                {{ form.hidden_tag() }}
+
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control",value=form.title.data) }}
+                <br/>
+
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control",value=form.description.data,style="height:200px") }}
+                <br/>
+
+                {{ form.sample_input.label(class="form-label") }}
+                {{ form.sample_input(class="form-control",value=form.sample_input.data,style="height:100px") }}
+
+                {{ form.sample_output.label(class="form-label") }}
+                {{ form.sample_output(class="form-control",value=form.sample_output.data,style="height:100px") }}
+                
+                <br/>
+
+                {{ form.exe_time.label(class="form-label") }}
+                {{ form.exe_time(class="form-control",value=form.exe_time.data) }}
+                <br/>
+
+                {{ form.exe_space.label(class="form-label") }}
+                {{ form.exe_space(class="form-control",value=form.exe_space.data) }}
+                <br/>
+
+                {{ form.submit(class="btn btn-secondary",value="Update") }}
+    </form>
+
+    <!-- FOOTER -->
+    <footer class="footer-theme rounded">
+        <h3>Project ZetaX</h3>
+        <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
+    </footer>
+{% endblock %}

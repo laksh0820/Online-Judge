@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField,StringField, PasswordField, SubmitField,TextAreaField,RadioField
+from wtforms import IntegerField,StringField, PasswordField, SubmitField,TextAreaField,RadioField,BooleanField
 from wtforms.validators import DataRequired,EqualTo,Email
 
 class SignUpForm(FlaskForm):
@@ -13,6 +13,7 @@ class SignUpForm(FlaskForm):
 class SignInForm(FlaskForm):
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
     password = PasswordField("Password",validators=[DataRequired()])
+    remember_me = BooleanField("Remember Me")
     submit = SubmitField("Submit")
 
 class ProblemForm(FlaskForm):
@@ -22,5 +23,4 @@ class ProblemForm(FlaskForm):
     sample_output = TextAreaField("Sample Output",validators=[DataRequired()])
     exe_time = IntegerField("Expected Execution Time",validators=[DataRequired()])
     exe_space = IntegerField("Expected Execution Space",validators=[DataRequired()])
-    nTestcases = IntegerField("Number of Testcases",validators=[DataRequired()])
     submit = SubmitField("Submit")  
