@@ -2,10 +2,11 @@
 
 {% block content %}
 <br>
-<div class="container-fluid text-center shadow p-3 mb-5 bg-body rounded">
-    <table class="table table-striped table-hover table-bordered bg-body-tertiary caption-top" >
-        <h1><small class="text-body-secondary">ProblemSet</small></h1>
-        <thead class="table-light">
+<div class="container-fluid text-bg-info shadow p-3 mb-5 rounded">
+    <h1><small class="text-body-secondary">ProblemSet</small></h1>
+    <div class="text-bg-light p-2 mb-3 rounded">  
+    <table class="table table-striped table-hover table-bordered caption-top" >
+        <thead>
             <tr>
                 <th scope="col">Problem ID</th>
                 <th scope="col">Problem Title</th>
@@ -15,11 +16,11 @@
             {% for id in ProblemIDs %}
             <tr>
                 <th scope="row">{{id}}</td>
-                <td><a href="/problem/{{id}}">{{ProblemTitles[loop.index0]}}</a></td>
+                <td><a class="link-primary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" href="/problem/{{id}}">{{ProblemTitles[loop.index0]}}</a></td>
             </tr>
             {% endfor %}
         </tbody>
-        <tfoot></tfoot>
     </table>
+    </div>
 </div>
 {% endblock %}
