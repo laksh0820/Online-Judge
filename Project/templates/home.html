@@ -18,7 +18,7 @@
         <br/>
         <header class="theme header-padding rounded">
             <div class="text-center">
-                {% if current_user == None %}
+                {% if current_user.is_authenticated == false %}
                     <h4>Welcome to</h4>
                     <h1>Online C Programme Evaluator</h1>
                 {% else %}
