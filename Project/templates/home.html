@@ -18,7 +18,7 @@
         <br/>
         <header class="theme header-padding rounded">
             <div class="text-center">
-                {% if current_user == None %}
+                {% if current_user.is_authenticated == false %}
                     <h4>Welcome to</h4>
                     <h1>Online C Programme Evaluator</h1>
                 {% else %}
@@ -39,8 +39,8 @@
               <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
                 <img src="/static/assets/image1.jpg" class="card-img-top img-thumbnail" alt="Contestant">
                 <div class="card-body">
-                  <h5 class="card-title"><a href="/contestant">Contestant</a></h5>
-                  <p class="card-text">Solve Problems to reinforce your Coding skills</p>
+                  <h5 class="card-title"><a class="link-primary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" href="/contestant">Contestant</a></h5>
+                  <p class="card-text">Upsolve Problems to reinforce your Coding skills</p>
                 </div>
               </div>
             </div>
@@ -48,8 +48,8 @@
               <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
                 <img src="/static/assets/image2.jpg" class="card-img-top img-thumbnail" alt="Judge">
                 <div class="card-body">
-                  <h5 class="card-title"><a href="/judge">Judge</a></h5>
-                  <p class="card-text">Post problems for others to see using our onlineIDE</p>
+                  <h5 class="card-title"><a class="link-primary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" href="/judge">Judge</a></h5>
+                  <p class="card-text">Post Problems for others to solve using our Online IDE</p>
                 </div>
               </div>
             </div>
@@ -57,8 +57,8 @@
               <div class="card h-100 shadow p-3 mb-5 bg-body-tertiary rounded">
                 <img src="/static/assets/image3.jpg" class="card-img-top img-thumbnail" alt="CodeSpace">
                 <div class="card-body">
-                  <h5 class="card-title"><a href="/onlineIDE">Online IDE</a></h5>
-                  <p class="card-text">Use our onlineIDE to run youe C programme</p>
+                  <h5 class="card-title"><a class="link-primary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" href="/onlineIDE">Online IDE</a></h5>
+                  <p class="card-text">Use our Online IDE to run youe C program</p>
                 </div>
               </div>
             </div>
