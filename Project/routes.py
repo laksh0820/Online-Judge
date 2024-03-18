@@ -7,7 +7,7 @@ from Project.models import Problem,User
 
 @app.route('/')
 def home(): 
-    return render_template('home.html',user=None)
+    return render_template('home.html')
 
 def judge_required(inner_func):
     def wrapped_function_judge(*args,**kwargs):
@@ -37,7 +37,7 @@ def signin():
             if check_password_hash(user.password,str(form.password.data)):
                 login_user(user)
                 flash("Logged in Successfully")
-                return redirect(url_for('signin'))
+                return render_template('home.html')
             else:
                 flash("Wrong Password!! Try Again",'error')
         else:

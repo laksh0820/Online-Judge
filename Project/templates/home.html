@@ -18,16 +18,16 @@
         <br/>
         <header class="theme header-padding rounded">
             <div class="text-center">
-                {% if user == None %}
+                {% if current_user == None %}
                     <h4>Welcome to</h4>
                     <h1>Online C Programme Evaluator</h1>
                 {% else %}
                     <h1>Online C Programme Evaluator</h1>
                     <h4>Welcome</h4>
-                    <h4>{{user.name}}</h4>
-                    <form action='/'>
+                    <h4>{{current_user.name}}</h4>
+                    <!-- <form action='/'>
                         <input type="submit" value="Log Out" name="logout">
-                    </form>
+                    </form> -->
                 {% endif %}
             </div>
         </header>
