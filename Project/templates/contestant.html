@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <table>
-        <thead>
+<div class="table-responsive">
+    <table class="table table-striped-hover-bordered bg-body-tertiary caption-top" >
+        <caption class="text-center">ProblemSet</caption>
+        <thead class="table-light">
             <tr>
-                <th>Problem ID</th>
-                <th>Problem Title</th>
+                <th scope="col">Problem ID</th>
+                <th scope="col">Problem Title</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             {% for id in ProblemIDs %}
             <tr>
-                <td>{{id}}</td>
+                <th scope="row">{{id}}</td>
                 <td><a href="/problem/{{id}}">{{ProblemTitles[loop.index0]}}</a></td>
             </tr>
             {% endfor %}
         </tbody>
         <tfoot></tfoot>
     </table>
-
+</div>
 {% endblock %}
