@@ -45,10 +45,11 @@
                 <br/>
                 
                 {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
-                {% endif %}
-                
+                        <!-- <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a> -->
+                {% else %}
                 {{ form.submit(class="btn btn-secondary")}}
+                {% endif %}
+
         </form>
 
          <!-- FOOTER -->
