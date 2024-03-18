@@ -117,6 +117,7 @@ def post_problems():
 
     return render_template('judge.html',form=form)
 
+# Show the problemset to the contestant
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 @login_required
 @contestant_required
