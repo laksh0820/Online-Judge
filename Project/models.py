@@ -29,6 +29,8 @@ class Problem(db.Model):
     sample_output = db.Column(db.String(100), nullable=False)
     exe_time = db.Column(db.Integer, nullable=False)
     exe_space = db.Column(db.Integer, nullable=False)
+    judging_testcases = db.Column(db.String(1000000),nullable=False)
+    exp_testcases_output = db.Column(db.String(1000000),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 

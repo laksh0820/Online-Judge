@@ -47,6 +47,14 @@
                 {{ form.exe_space(class="form-control",value=form.exe_space.data) }}
                 <br/>
 
+                {{ form.judging_testcases.label(class="form-label") }}
+                {{ form.judging_testcases(class="form-control",value=form.judging_testcases.data,style="height:200px") }}
+                <br/>
+
+                {{ form.exp_testcases_output.label(class="form-label") }}
+                {{ form.exp_testcases_output(class="form-control",value=form.exp_testcases_output.data,style="height:200px") }}
+                <br/>
+
                 {{ form.submit(class="btn btn-secondary",value="Update") }}
     </form>
 

@@ -23,4 +23,6 @@ class ProblemForm(FlaskForm):
     sample_output = TextAreaField("Sample Output",validators=[DataRequired()])
     exe_time = IntegerField("Expected Execution Time",validators=[DataRequired()])
     exe_space = IntegerField("Expected Execution Space",validators=[DataRequired()])
+    judging_testcases = TextAreaField("Judging Testcases",validators=[DataRequired()])
+    exp_testcases_output = TextAreaField("Expected Testcases Output",validators=[DataRequired()])
     submit = SubmitField("Submit")  

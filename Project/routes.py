@@ -1,4 +1,4 @@
-from flask import render_template,redirect,request,flash,url_for,make_response
+from flask import render_template,redirect,request,flash,url_for
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,current_user,logout_user
 from Project import app,db
@@ -102,6 +102,8 @@ def post_problems():
         newProblem.sample_output = form.sample_output.data
         newProblem.exe_time = form.exe_time.data
         newProblem.exe_space = form.exe_space.data
+        newProblem.judging_testcases = form.judging_testcases.data
+        newProblem.exp_testcases_output = form.exp_testcases_output.data
         newProblem.user_id = current_user.id
 
         try:
@@ -117,6 +119,8 @@ def post_problems():
         form.sample_output.data = ''
         form.exe_time.data = 0
         form.exe_space.data = 0
+        form.judging_testcases.data = ''
+        form.exp_testcases_output.data = ''
 
     return render_template('judge.html',form=form)
 
@@ -143,6 +147,8 @@ def modify_problem(id):
         problem.sample_output = form.sample_output.data
         problem.exe_time = form.exe_time.data
         problem.exe_space = form.exe_space.data
+        problem.judging_testcases = form.judging_testcases.data
+        problem.exp_testcases_output = form.exp_testcases_output.data
         problem.user_id = current_user.id
 
         try:
@@ -159,6 +165,8 @@ def modify_problem(id):
     form.sample_output.data=problem.sample_output
     form.exe_time.data=problem.exe_time
     form.exe_space.data=problem.exe_space  
+    form.judging_testcases.data=problem.judging_testcases
+    form.exp_testcases_output.data=problem.exp_testcases_output
     return render_template('modify_problem.html',form=form,current_problem=problem)
 
 # To delete the problems created by the current user(Judge)
