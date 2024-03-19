@@ -17,6 +17,7 @@
         {% endfor %}
 
     <br/>
+<div class="container-fluid bg-body-tertiary border border-info shadow p-3 mb-5 rounded">
     <h1>Problems</h1>
     <br/>
     {% for problem in problems %}
@@ -26,6 +27,6 @@
             <a href="/modify_problem/{{problem.id}}" class="btn btn-secondary">Edit</a>
             <a href="/delete_problem/{{problem.id}}" class="btn btn-secondary">Delete</a>
         </div>
-    {% endfor %}
-
+    {% endfor %}        
+</div>
 {% endblock %}
