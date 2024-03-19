@@ -210,6 +210,6 @@ def display_problem(problem_id):
     else :
         return render_template('problem.html')
 
-# @app.route('/onlineIDE')
-# def online_coding():
-#     pass
+@app.route('/onlineIDE',methods=['GET'])
+def online_coding():
+    return render_template('onlineIDE.html')

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class = "heading"> Project ZetaX</h1>
+<div class="editor">
+    <div class="editor__wrapper">
+        <div class="editor__body">
+            <div id="editorCode" class="editor__code"></div>
+        </div>
+        <div class="editor__footer">
+            <div class="editor__footer--left">
+                <button class="editor__btn editor__run">Run ></button>
+                <button class="editor__btn editor__reset">Reset ></button>
+            </div>
+            <div class="editor__footer--right">
+                <div class="tabs"><button id = "input_tab" class = "input_tab highlight_btn">INPUT</button><button id = "output_tab" class = "output_tab">OUTPUT</button></div>
+                <div class="editor__console">
+                    <textarea id = "input_textarea" class="editor__console-logs"></textarea>
+                    <textarea id = "output_textarea" disabled = "disabled" class="editor__console-logs hidden"></textarea>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
