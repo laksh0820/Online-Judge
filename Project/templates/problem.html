@@ -3,15 +3,27 @@
 {% block content %}
 <br>
 <div class="container-fluid bg-body-tertiary border border-info shadow p-3 mb-5 rounded">
-    <div class="container-fluid bg-warning shadow p-2 mb-3 rounded">
-        <h1 class="text-center"><p class=" text-primary-emphasis fw-bolder">{{Problem_Parameters[1]}}</p></h1>
+    <div class="container-fluid p-2 mb-3 rounded">
+        <h2 class="text-center"><p class=" text-primary-emphasis fw-bolder">{{Problem_Parameters[1]}}</p></h2>
     </div>
-    <h2 class="text-center"><small class="text-primary-emphasis">Expected Time : {{Problem_Parameters[5]}} seconds</small></h2>
-    <h2 class="text-center"><small class="text-primary-emphasis">Expected Space : {{Problem_Parameters[6]}} KB</small></h2>
+    <h4 class="text-center"><small class="text-primary-emphasis">Expected Time : {{Problem_Parameters[5]}} seconds</small></h4>
+    <h4 class="text-center"><small class="text-primary-emphasis">Expected Space : {{Problem_Parameters[6]}} KB</small></h4>
     <br><br>
-    <div class="container-fluid bg-warning p-2 mb-3 rounded">
-        <h2 class="h1 text-center"><p class="text-primary">Problem Statement</p></h2>
-        <p class="fs-2 text-wrap text-body-emphasis m-2">{{Problem_Parameters[2]}}</p>
+    <div class="container-fluid p-2 mb-3 rounded">
+        <h4 class="h4 text-center"><p class="text-primary">Problem Statement</p></h4>
+        {% for text in Problem_Parameters[2] %}
+            {%- if text == '\n' -%}
+                <br/>
+            {%- else -%}
+                {{text}}
+            {%- endif -%}
+        {% endfor %}
+        </br>
+    </br>
+        <h5>Sample Input</h5>
+        <p>{{Problem_Parameters[3]}}</p>
+        <h5>Sample Output</h5>
+        <p>{{Problem_Parameters[4]}}</p>
     </div>
 </div>
 {% endblock %}
