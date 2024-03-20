@@ -185,6 +185,8 @@ def delete_problem(id):
         return render_template('show_judge_problems.html',problems=current_user.problems)
     except:
         flash("Oops! There is a problem in deleting this problem. Try Again")
+        return render_template('show_judge_problems.html',problems=current_user.problems)
+
 
 @app.route('/contestant', methods= ['GET' , 'POST'])   
 @login_required
