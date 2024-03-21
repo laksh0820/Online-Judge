@@ -4,7 +4,10 @@ from flask_login import login_user,login_required,current_user,logout_user
 from Project import app,db
 from Project.forms import SignInForm,SignUpForm,ProblemForm
 from Project.models import Problem,User
+import requests
+import base64
 
+# Home Page
 @app.route('/')
 def home(): 
     return render_template('home.html')
@@ -87,6 +90,11 @@ def logout():
     logout_user()
     flash("Logged out Successfully")
     return redirect(url_for('signin'))
+
+# Display the Online editor
+@app.route('/onlineIDE',methods=['GET'])
+def online_coding():
+    return render_template('onlineIDE.html')
 
 # Post a new Problem
 @app.route('/judge',methods = ['GET','POST'])
@@ -188,30 +196,79 @@ def delete_problem(id):
         return render_template('show_judge_problems.html',problems=current_user.problems)
 
 
-@app.route('/contestant', methods= ['GET' , 'POST'])   
+# Show problems to the contestant
+@app.route('/contestant', methods= ['GET'])   
 @login_required
 @contestant_required
-def solve_problems():
-    if request.method == 'GET':
-        problem_ids = Problem.query.with_entities(Problem.id).all()
-        pblm_id_list = [x[0] for x in problem_ids]
-        problem_titles = Problem.query.with_entities(Problem.title).all()
-        pblm_title_list = [x[0] for x in problem_titles]
-        return render_template('contestant.html' , ProblemIDs = pblm_id_list , ProblemTitles = pblm_title_list)
-    else:
-        return render_template('contestant.html')
+def show_problems():
+    problem_ids = Problem.query.with_entities(Problem.id).all()
+    pblm_id_list = [x[0] for x in problem_ids]
+    problem_titles = Problem.query.with_entities(Problem.title).all()
+    pblm_title_list = [x[0] for x in problem_titles]
+    return render_template('contestant.html' , ProblemIDs = pblm_id_list , ProblemTitles = pblm_title_list)
     
+# Problem Description and API call on submission
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
 @login_required
 @contestant_required
-def display_problem(problem_id):
+def solve_problem(problem_id):
+    problem = Problem.query.filter(Problem.id == problem_id).all()
+    pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
     if request.method == 'GET':
-        problem = Problem.query.filter(Problem.id == problem_id).all()
-        pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
         return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
     else :
-        return render_template('problem.html')
+        # Input information, change these according to your request
+        userCode = '#include <stdio.h>\n int main(){int n; scanf("%d",&n); printf("%d",n); return 0;}'
+        test_input = problem[0].judging_testcases
+        expected_output = problem[0].exp_testcases_output
+        time_limit = problem[0].exe_time # in seconds
+        memory_limit = problem[0].exe_space # in KB
 
-@app.route('/onlineIDE',methods=['GET'])
-def online_coding():
-    return render_template('onlineIDE.html')
+        # Output information
+        status = "" # Accepted/ Wrong Answer / Compilation Error
+        compile_output = "" # Will contain the compiler output if there is a compilation error
+
+
+        # base64 encoding the text data
+        userCode_encoded = (base64.b64encode(userCode.encode("utf-8"))).decode("utf-8")
+        test_input_encoded = (base64.b64encode(test_input.encode("utf-8"))).decode("utf-8")
+        expected_output_encoded = (base64.b64encode(expected_output.encode("utf-8"))).decode("utf-8")
+
+
+        url = "https://judge0-ce.p.rapidapi.com/submissions"
+
+        querystring = {"base64_encoded":"true","wait":"true","fields":"*"}
+
+        payload = {
+            "language_id": 50,
+            "source_code": userCode_encoded,
+            "stdin": test_input_encoded,
+            "expected_output" : expected_output_encoded,
+            "cpu_time_limit" : time_limit,
+            "memory_limit" : memory_limit
+        }
+        headers = {
+            "content-type": "application/json",
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key": "29a58e30d8msh81af7566051cd6ep196b88jsne041a8d0a091",
+            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com"
+        }
+
+        # Getting the response
+        response = requests.post(url, json=payload, headers=headers, params=querystring)
+
+        API_data = response.json()
+
+        print(API_data)
+
+        # status = API_data["status"]["description"]
+        # compile_output_encoded = API_data["compile_output"]
+
+        # if(compile_output_encoded!=None):
+        #     compile_output = base64.b64decode(compile_output_encoded)
+        #     compile_output = compile_output.decode("utf-8")
+        
+        # flash(status)
+        return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
+        
+

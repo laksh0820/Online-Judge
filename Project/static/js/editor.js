@@ -78,14 +78,16 @@ run_btn.addEventListener('click',async () => {
     $.ajax(settings).done(function (response) {
         console.log(response);
         let stdout = response["stdout"];
-        
+        let compile_output = response["compile_output"];
+
         if(stdout!=null){
             output_textarea.value = b64DecodeUnicode(stdout);
-            //console.log(b64DecodeUnicode(stdout))
         }
         else{
-            output_textarea.value = b64DecodeUnicode(response["compile_output"]);
-            //console.log(b64DecodeUnicode(response["compile_output"]));
+            if(compile_output!=null){
+                output_textarea.value = b64DecodeUnicode(compile_output);
+            }
+            else output_textarea.value = "";
         }
     });
 });
