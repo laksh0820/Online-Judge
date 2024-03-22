@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for message in get_flashed_messages(with_categories = True) %}
+        {% if message|first == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% elif message|first == "Accepted" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% elif message|first == "Wrong Answer" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% elif message|first == "Compilation Error" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message[1] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% endif %}
+    {% endfor %}
+    
+    <br/>
+    <div class="container-fluid bg-body-tertiary border border-info shadow p-3 mb-5 rounded">
+        <h1>Submissions</h1>
+        <br/>
+        {% for submission in submissions %}
+            {% for problem in problems %}
+                {% if problem.id == submission.problem_id %}
+                    <div  class="shadow p-3 mb-5 bg-body rounded">
+                        <h4>{{ problem.title }}</h4><br/>
+                        {% if submission.status == "Accepted" %}
+                            <img src="{{ url_for('static',filename='assets/right.jpg')}}">
+                            <p style="color: green;">Accepted</p>
+                        {% elif submission.status == "Wrong Answer" %}
+                            <img src="{{ url_for('static',filename='assets/wrong.png')}}">
+                            <p style="color: red;">Wrong Answer</p>
+                        {% else %}
+                            <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
+                            <p style="color: yellow;">Compilation error</p>
+                        {% endif %}
+                        <br/>
+                        <pre id="user_code" class="prettyprint">{{ submission.user_code }}</pre>
+                        <a href="/delete_submission/{{submission.id}}" class="btn btn-secondary">Delete</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}        
+    </div>
+{% endblock %}

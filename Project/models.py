@@ -15,6 +15,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.String(100), nullable=False,unique=True)
     password = db.Column(db.String(100), nullable=False)
     type = db.Column(db.String(100), nullable=False)
+    submissions = db.relationship('Submissions',backref='user')
     problems = db.relationship('Problem',backref='user')
     
     def __repr__(self):
@@ -32,7 +33,18 @@ class Problem(db.Model):
     judging_testcases = db.Column(db.String(1000000),nullable=False)
     exp_testcases_output = db.Column(db.String(1000000),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+    submission = db.relationship('Submissions',backref='problem')
 
     def __repr__(self):
         return f"{self.title} - {self.description}"
+
+class Submissions(db.Model):
+    __bind_key = 'submissions'
+    id = db.Column(db.Integer,primary_key=True)
+    user_code = db.Column(db.String(100000))
+    status = db.Column(db.String(100),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    problem_id = db.Column(db.Integer,db.ForeignKey('problem.id'))
+
+    def __repr__(self):
+        return f"{self.id} - {self.user_code}"

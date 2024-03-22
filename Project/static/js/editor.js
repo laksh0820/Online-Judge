@@ -3,6 +3,7 @@ const run_btn = document.querySelector('.editor__run');
 const reset_btn = document.querySelector('.editor__reset');
 const input_btn = document.querySelector('#input_tab');
 const output_btn = document.querySelector('#output_tab');
+const submit_btn = document.querySelector('#submit_tab')
 const input_textarea = document.querySelector('#input_textarea');
 const output_textarea = document.querySelector('#output_textarea');
 
@@ -68,7 +69,7 @@ run_btn.addEventListener('click',async () => {
         headers: {
             'content-type': 'application/json',
             'Content-Type': 'application/json',
-            'X-RapidAPI-Key': '29a58e30d8msh81af7566051cd6ep196b88jsne041a8d0a091',
+            'X-RapidAPI-Key': '63a304c85bmsh898f484b92ac5dfp158cf8jsne847cf5be12f',
             'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         },
         processData: true,
@@ -112,4 +113,22 @@ output_btn.addEventListener('click',()=>{
     output_btn.classList.add("highlight_btn");
     input_textarea.classList.add("hidden");
     output_textarea.classList.remove("hidden");
+});
+
+// Submit button
+submit_btn.addEventListener('click',()=>{
+    const userCode = codeEditor.getValue();
+    const problem_id = document.getElementById('problem_id').getAttribute('myid');
+    const dict_value = {userCode,problem_id};
+
+   $.ajax({
+        url:"/problem/1",
+        type:"POST",
+        contentType:"application/json",
+        data:JSON.stringify(dict_value),
+        success:function(response)
+        {
+            window.location.href = response.redirect
+        }
+   });
 });

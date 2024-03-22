@@ -1,9 +1,9 @@
-from flask import render_template,redirect,request,flash,url_for
+from flask import render_template,redirect,request,flash,url_for,jsonify
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,current_user,logout_user
 from Project import app,db
 from Project.forms import SignInForm,SignUpForm,ProblemForm
-from Project.models import Problem,User
+from Project.models import Problem,User,Submissions
 import requests
 import base64
 
@@ -206,19 +206,52 @@ def show_problems():
     problem_titles = Problem.query.with_entities(Problem.title).all()
     pblm_title_list = [x[0] for x in problem_titles]
     return render_template('contestant.html' , ProblemIDs = pblm_id_list , ProblemTitles = pblm_title_list)
+
+# To show the problems submitted by the current user(Contestant)
+@app.route('/get_submissions/<int:id>',methods=['GET','POST'])
+@login_required
+@contestant_required
+def get_submissions(id):
+    contestant = User.query.get_or_404(id)
+    problems = Problem.query.all()
+    return render_template('submissions.html',submissions=contestant.submissions,problems=problems)
+
+# To delete the submissions posted by the current user(Contestant)
+@app.route('/delete_submission/<int:id>',methods=['GET','POST'])
+@login_required
+@contestant_required
+def delete_submission(id):
+    problems = Problem.query.all()
+    submission = Submissions.query.get_or_404(id)
+
+    try:
+        db.session.delete(submission)
+        db.session.commit()
+
+        flash("Successfully deleted")
+
+        return render_template('submissions.html',submissions=current_user.submissions,problems=problems)
+    except:
+        flash("Oops! There is a problem in deleting this submission. Try Again")
+        return render_template('submissions.html',submissions=current_user.submissions,problems=problems)
+
     
 # Problem Description and API call on submission
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
 @login_required
 @contestant_required
 def solve_problem(problem_id):
-    problem = Problem.query.filter(Problem.id == problem_id).all()
-    pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
     if request.method == 'GET':
+        problem = Problem.query.filter(Problem.id == problem_id).all()
+        pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
         return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
     else :
         # Input information, change these according to your request
-        userCode = '#include <stdio.h>\n int main(){int n; scanf("%d",&n); printf("%d",n); return 0;}'
+        output = request.get_json()
+        problem = Problem.query.filter(Problem.id == output['problem_id']).all()
+        pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
+        
+        userCode = output['userCode']
         test_input = problem[0].judging_testcases
         expected_output = problem[0].exp_testcases_output
         time_limit = problem[0].exe_time # in seconds
@@ -250,7 +283,7 @@ def solve_problem(problem_id):
         headers = {
             "content-type": "application/json",
             "Content-Type": "application/json",
-            "X-RapidAPI-Key": "29a58e30d8msh81af7566051cd6ep196b88jsne041a8d0a091",
+            "X-RapidAPI-Key": "63a304c85bmsh898f484b92ac5dfp158cf8jsne847cf5be12f",
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com"
         }
 
@@ -259,16 +292,26 @@ def solve_problem(problem_id):
 
         API_data = response.json()
 
-        print(API_data)
+        status = API_data["status"]["description"]
+        compile_output_encoded = API_data["compile_output"]
 
-        # status = API_data["status"]["description"]
-        # compile_output_encoded = API_data["compile_output"]
+        if(compile_output_encoded!=None):
+            compile_output = base64.b64decode(compile_output_encoded)
+            compile_output = compile_output.decode("utf-8")
 
-        # if(compile_output_encoded!=None):
-        #     compile_output = base64.b64decode(compile_output_encoded)
-        #     compile_output = compile_output.decode("utf-8")
-        
-        # flash(status)
-        return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
-        
+        submit_solution = Submissions()
+        submit_solution.user_code = userCode
+        submit_solution.user_id = current_user.id
+        submit_solution.problem_id = problem_id
+        submit_solution.status = status
 
+        try:
+            db.session.add(submit_solution)
+            db.session.commit()
+        except:
+            flash("There is a problem in submitting the solution. Please Try Again")
+
+        flash(status,status)
+        print(status)
+        problems = Problem.query.all()
+        return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})
