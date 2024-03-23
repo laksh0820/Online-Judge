@@ -4,8 +4,11 @@ from flask_login import login_user,login_required,current_user,logout_user
 from Project import app,db
 from Project.forms import SignInForm,SignUpForm,ProblemForm
 from Project.models import Problem,User,Submissions
-import requests
-import base64
+import os
+import os.path
+import time
+import datetime
+import re
 
 # Home Page
 @app.route('/')
@@ -92,9 +95,59 @@ def logout():
     return redirect(url_for('signin'))
 
 # Display the Online editor
-@app.route('/onlineIDE',methods=['GET'])
+@app.route('/onlineIDE',methods=['GET','POST'])
 def online_coding():
-    return render_template('onlineIDE.html')
+    if request.method == 'GET':
+        return render_template('onlineIDE.html')
+    else:
+        output = request.get_json()
+        userCode = output['userCode']
+        stdin = output['stdin']
+
+        path = r"C:\Users\Laksh\OneDrive\Documents\GitHub\Project-zetaX\runner_C_files"
+
+        # create a separate folder for each submission
+        now = datetime.datetime.now()
+        now = now.strftime('%Y-%m-%d_%H-%M-%S')
+
+        os.system(f"cd {path} && mkdir {now}")
+
+        path = f"{path}\\{now}"
+        file_name = "main.c"
+        file_path = os.path.join(path, file_name)
+
+        f = open(file_path, "w")
+        f.write(userCode)
+        f.close()
+
+        input_file_name = "input.txt"
+        input_file_path = os.path.join(path, input_file_name)
+
+        f = open(input_file_path, "w")
+        f.write(stdin)
+        f.close()
+
+        # userCode is stored in userCode.c
+        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
+        time.sleep(2) # Required to compile in 2 seconds
+
+        exe_path = f"{path}\\a.exe"
+
+        # if a.exe is created, run and store the output to output.txt
+        if os.path.isfile(exe_path):
+            os.system(f"cd {path} && cat input.txt | {exe_path} > output.txt")
+            output_path = os.path.join(path, "output.txt")
+            with open(output_path,'r') as f:
+                output = f.read()
+            compile_output = None
+        else:
+            output = None
+            compile_output_path = os.path.join(path, "compiler_message.txt")
+            with open(compile_output_path,'r') as f:
+                compile_output = f.read()
+
+        time.sleep(2)
+        return jsonify({'stdout':output,'compile_output':compile_output})
 
 # Post a new Problem
 @app.route('/judge',methods = ['GET','POST'])
@@ -257,47 +310,8 @@ def solve_problem(problem_id):
         time_limit = problem[0].exe_time # in seconds
         memory_limit = problem[0].exe_space # in KB
 
-        # Output information
-        status = "" # Accepted/ Wrong Answer / Compilation Error
-        compile_output = "" # Will contain the compiler output if there is a compilation error
-
-
-        # base64 encoding the text data
-        userCode_encoded = (base64.b64encode(userCode.encode("utf-8"))).decode("utf-8")
-        test_input_encoded = (base64.b64encode(test_input.encode("utf-8"))).decode("utf-8")
-        expected_output_encoded = (base64.b64encode(expected_output.encode("utf-8"))).decode("utf-8")
-
-
-        url = "https://judge0-ce.p.rapidapi.com/submissions"
-
-        querystring = {"base64_encoded":"true","wait":"true","fields":"*"}
-
-        payload = {
-            "language_id": 50,
-            "source_code": userCode_encoded,
-            "stdin": test_input_encoded,
-            "expected_output" : expected_output_encoded,
-            "cpu_time_limit" : time_limit,
-            "memory_limit" : memory_limit
-        }
-        headers = {
-            "content-type": "application/json",
-            "Content-Type": "application/json",
-            "X-RapidAPI-Key": 'bf1c68d90fmsh23eab7668080859p1cb108jsn2275494bdbe0',
-            "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com"
-        }
-
-        # Getting the response
-        response = requests.post(url, json=payload, headers=headers, params=querystring)
-
-        API_data = response.json()
-
-        status = API_data["status"]["description"]
-        compile_output_encoded = API_data["compile_output"]
-
-        if(compile_output_encoded!=None):
-            compile_output = base64.b64decode(compile_output_encoded)
-            compile_output = compile_output.decode("utf-8")
+        expected_output_list = re.split(" |\n",expected_output)
+        status = ""
 
         submit_solution = Submissions()
         submit_solution.user_code = userCode
@@ -311,8 +325,71 @@ def solve_problem(problem_id):
         except:
             flash("There is a problem in submitting the solution. Please Try Again")
 
+        path = r"C:\Users\Laksh\OneDrive\Documents\GitHub\Project-zetaX\runner_C_files"
+
+        # create a separate folder for each submission
+        os.system(f"cd {path} && mkdir {submit_solution.id}")
+
+        path = f"{path}\\{submit_solution.id}"
+        file_name = "main.c"
+        file_path = os.path.join(path, file_name)
+
+        f = open(file_path, "w")
+        f.write(userCode)
+        f.close()
+
+        input_file_name = "input.txt"
+        input_file_path = os.path.join(path, input_file_name)
+    
+        f = open(input_file_path, "w")
+        f.write(test_input)
+        f.close()
+
+        # userCode is stored in userCode.c
+        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
+        time.sleep(2) # Required to compile in 2 seconds
+
+        exe_path = f"{path}\\a.exe"
+
+        # if a.exe is created, run and store the output to output.txt
+        if os.path.isfile(exe_path):
+            os.system(f"cd {path} && cat input.txt | {exe_path} > output.txt")
+            output_path = os.path.join(path, "output.txt")
+            with open(output_path,'r') as f:
+                output = f.read()
+                output_list = re.split(" |\n",output) 
+            compile_output = None
+        else:
+            status = "Compilation Error"
+            output = None
+            compile_output_path = os.path.join(path, "compiler_message.txt")
+            with open(compile_output_path,'r') as f:
+                compile_output = f.read()
+
+        time.sleep(2)
+
+        # Analyze the output whether it is compilation_error,as per the expected_output or Wrong_output
+        if status != "Compilation Error":
+            status = "Accepted"
+            
+            if len(output_list) == len(expected_output_list):
+                for i in range(0,len(output_list)):
+                    if output_list[i] != expected_output_list[i]:
+                        status = "Wrong Answer"
+                        break
+            else:
+                status = "Wrong Answer"
+                    
+
+        # Update status
+        submit_solution.status = status
+        try:
+            db.session.commit()
+        except:
+            flash("There is a problem in submitting the solution. Please Try Again")
+
         flash(status,status)
-        print(API_data)
         problems = Problem.query.all()
         return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})
+
     

@@ -51,46 +51,73 @@ editorLib.init();
 // Run button
 run_btn.addEventListener('click',async () => {
     // Get input from the code editor
-    const userCode = codeEditor.getValue();
-    const encoded_code = btoa(userCode);
-    const stdin = input_textarea.value;
-    const encoded_std = btoa(stdin);
+    // const userCode = codeEditor.getValue();
+    // const encoded_code = btoa(userCode);
+    // const stdin = input_textarea.value;
+    // const encoded_std = btoa(stdin);
 
-    // Send this code to API to parse it. How exactly to do this?
+    // // Send this code to API to parse it. How exactly to do this?
 
-    // 1. Just use judge0 -> not very impressive, doesn't require any backend work
-    // 2. Create an API, use Python in backend for shell scripting, compile and send data back to the front end.
+    // // 1. Just use judge0 -> not very impressive, doesn't require any backend work
+    // // 2. Create an API, use Python in backend for shell scripting, compile and send data back to the front end.
 
-    const settings = {
-        async: true,
-        crossDomain: true,
-        url: 'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true&fields=*',
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'Content-Type': 'application/json',
-            'X-RapidAPI-Key': 'bf1c68d90fmsh23eab7668080859p1cb108jsn2275494bdbe0',
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-        },
-        processData: true,
-        data: '{\r\n    "language_id": 50,\r\n    "source_code": "' + encoded_code + '",\r\n    "stdin": "' + encoded_std + '"\r\n}'
-    };
+    // const settings = {
+    //     async: true,
+    //     crossDomain: true,
+    //     url: 'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=true&fields=*',
+    //     method: 'POST',
+    //     headers: {
+    //         'content-type': 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'X-RapidAPI-Key': 'bf1c68d90fmsh23eab7668080859p1cb108jsn2275494bdbe0',
+    //         'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+    //     },
+    //     processData: true,
+    //     data: '{\r\n    "language_id": 50,\r\n    "source_code": "' + encoded_code + '",\r\n    "stdin": "' + encoded_std + '"\r\n}'
+    // };
     
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        let stdout = response["stdout"];
-        let compile_output = response["compile_output"];
+    // $.ajax(settings).done(function (response) {
+    //     console.log(response);
+    //     let stdout = response["stdout"];
+    //     let compile_output = response["compile_output"];
 
-        if(stdout!=null){
-            output_textarea.value = b64DecodeUnicode(stdout);
-        }
-        else{
-            if(compile_output!=null){
-                output_textarea.value = b64DecodeUnicode(compile_output);
+    //     if(stdout!=null){
+    //         output_textarea.value = b64DecodeUnicode(stdout);
+    //     }
+    //     else{
+    //         if(compile_output!=null){
+    //             output_textarea.value = b64DecodeUnicode(compile_output);
+    //         }
+    //         else output_textarea.value = "";
+    //     }
+    // });
+
+    const userCode = codeEditor.getValue();
+    const stdin = input_textarea.value;
+    const dict_value = {userCode,stdin};
+
+   $.ajax({
+        url:"/onlineIDE",
+        type:"POST",
+        contentType:"application/json",
+        data:JSON.stringify(dict_value),
+        success:function(response)
+        {
+            console.log(response);
+            let stdout = response["stdout"];
+            let compile_output = response["compile_output"];
+
+            if(stdout!=null){
+                output_textarea.value = stdout;
             }
-            else output_textarea.value = "";
+            else{
+                if(compile_output!=null){
+                    output_textarea.value = compile_output;
+                }
+                else output_textarea.value = "";
+            }
         }
-    });
+   });
 });
 
 // Reset Button
