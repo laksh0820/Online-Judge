@@ -21,7 +21,7 @@
     <h1>Problems</h1>
     <br/>
     {% for problem in problems %}
-        <div  class="shadow p-3 mb-5 bg-body rounded" style="max-height: 220px;">
+        <div  class="shadow p-3 mb-5 bg-body rounded">
             <h4>{{ problem.title }}</h4><br/>
             <small>{{ problem.description }}</small><br/><br/>
             <a href="/modify_problem/{{problem.id}}" class="btn btn-secondary">Edit</a>

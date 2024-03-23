@@ -6,37 +6,46 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarText">
+
       <ul class="nav nav-pills">
-        
-        <li class="nav-item">
-          <a class="nav-link pill" href="{{ url_for('home')}}">Home</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link pill" href="{{ url_for('home')}}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pill" href="{{ url_for('online_coding')}}">Online IDE</a>
+          </li>
         {% if current_user.is_authenticated %}
             {% if current_user.type == 'Judge' %}
-            <li class="nav-item">
-              <a class="nav-link pill" href="/show_judge_problems/{{current_user.id}}">Problems</a>
-            </li>
+              <li class="nav-item">
+                <a class="nav-link pill" href="/show_judge_problems/{{current_user.id}}">Problems</a>
+              </li>
             {% endif %}
             {% if current_user.type == 'Contestant' %}
-            <li class="nav-item">
-              <a class="nav-link pill" href="/get_submissions/{{current_user.id}}">Submissions</a>
-            </li>
+                <li class="nav-item">
+                  <a class="nav-link pill" href="/get_submissions/{{current_user.id}}">Submissions</a>
+                </li>
             {% endif %}
-          <li class="nav-item ml-auto">
-            <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>
-          </li>
-        {% else %}
-          <li class="nav-item ml-auto" style="float: right;">
-            <a class="nav-link pill" href="{{ url_for('signin')}}">Sign in</a>
-          </li>
-
-          <li class="nav-item ml-auto" style="float: right;">
-            <a class="nav-link pill" href="{{ url_for('signup')}}">Sign Up</a>
-          </li>
-        {% endif %}
-      </ul> 
+          {% endif %}
       </ul>
     </div>
+        
+        {% if current_user.is_authenticated %}
+          <div class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>
+            </li>
+          </div>
+        {% else %}
+          <div class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link pill" href="{{ url_for('signin')}}">Sign in</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link pill" href="{{ url_for('signup')}}">Sign Up</a>
+            </li>
+          </div>
+        {% endif %}
   </div>
 </nav>
