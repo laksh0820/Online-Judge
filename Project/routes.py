@@ -80,7 +80,7 @@ def signup():
         else:
             flash('This name already exits. Please enter a different name','error')
 
-        return redirect(url_for('signup'))
+        return redirect(url_for('signin'))
     return render_template('signup.html',form = form)
 
 # Logout of a user account
