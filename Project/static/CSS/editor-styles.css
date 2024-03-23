@@ -53,10 +53,6 @@ html, body {
     display: flex;
 }
 
-/* .editor__footer--left {
-
-} */
-
 .editor__footer--right {
     flex: 1;
     margin-left: 10px;
@@ -66,8 +62,7 @@ html, body {
 #editor__run,#editor__reset {
     border: 0;
     padding: .5em;
-    /* background-color: #fff; */
-    /* border: 2px solid #333; */
+    border: 2px solid #333;
     margin-top: 1em;
     width: 100px;
     cursor: pointer;
@@ -104,17 +99,10 @@ html, body {
 #input_tab,#output_tab {
     border: 0;
     padding: .5em;
-    /* background-color: #fff; */
-    /* border: 2px solid #333; */
+    border: 2px solid #333;
     margin-top: 1em;
     width: 100px;
     cursor: pointer;
-}
-
-.highlight_btn {
-    background-color: #575459;
-    border: 3px solid #222;
-    opacity: 0.8;
 }
 
 .hidden {
