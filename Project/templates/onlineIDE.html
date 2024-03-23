@@ -9,29 +9,29 @@
         </div>
     </header>
 
-    <div class="editor">
+    <div class="editor rounded">
         <div class="editor__wrapper rounded ">
 
-            <div class="editor__body">
+            <div class="editor__body rounded">
                 <div id="editorCode" class="editor__code"></div>
             </div>
 
-            <div class="editor__footer">
-                <div class="editor__footer--left">
-                    <button class="editor__btn editor__run">Run ></button>
-                    <button class="editor__btn editor__reset">Reset ></button>
+            <div class="editor__footer rounded">
+                <div class="editor__footer--left rounded">
+                    <button class="btn btn-secondary" id="editor__run">Run ></button>
+                    <button class="btn btn-secondary" id="editor__reset">Reset ></button>
                 </div>
-                <div class="editor__footer--right">
-                    <div class="tabs">
-                        <button id = "input_tab" class = "input_tab highlight_btn">INPUT</button>
-                        <button id = "output_tab" class = "output_tab">OUTPUT</button>
+                <div class="editor__footer--right rounded" role="navigation">
+                    <div class="nav nav-pills nav-justified" role="tablist">
+                        <button id = "input_tab" class = "btn btn-secondary m-3 b-2" type="button" role="tab">INPUT</button>
+                        <button id = "output_tab" class = "btn btn-success m-3 b-2" type="button" role="tab">OUTPUT</button>
                     </div>
                 </div>
             </div>
 
-            <div class="editor__console">
-                <textarea id = "input_textarea" class="editor__console-logs"></textarea>
-                <textarea id = "output_textarea" disabled = "disabled" class="editor__console-logs hidden"></textarea>
+            <div class="editor__console rounded">
+                <textarea id = "input_textarea" class="editor__console-logs rounded"></textarea>
+                <textarea id = "output_textarea" disabled = "disabled" class="editor__console-logs hidden rounded"></textarea>
             </div>
 
         </div>

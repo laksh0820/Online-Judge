@@ -1,6 +1,6 @@
 // Retrive Elements
-const run_btn = document.querySelector('.editor__run');
-const reset_btn = document.querySelector('.editor__reset');
+const run_btn = document.querySelector('#editor__run');
+const reset_btn = document.querySelector('#editor__reset');
 const input_btn = document.querySelector('#input_tab');
 const output_btn = document.querySelector('#output_tab');
 const submit_btn = document.querySelector('#submit_tab')
@@ -101,7 +101,7 @@ reset_btn.addEventListener('click',()=>{
 
 // Input button
 input_btn.addEventListener('click',()=>{
-    output_btn.classList.remove("highlight_btn");
+    // output_btn.classList.remove("highlight_btn");
     input_btn.classList.add("highlight_btn");
     output_textarea.classList.add("hidden");
     input_textarea.classList.remove("hidden");
@@ -110,7 +110,7 @@ input_btn.addEventListener('click',()=>{
 // Output button
 output_btn.addEventListener('click',()=>{
     input_btn.classList.remove("highlight_btn");
-    output_btn.classList.add("highlight_btn");
+    // output_btn.classList.add("highlight_btn");
     input_textarea.classList.add("hidden");
     output_textarea.classList.remove("hidden");
 });
