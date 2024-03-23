@@ -29,7 +29,7 @@
     <div class="container-fluid bg-body-tertiary border border-info shadow p-3 mb-5 rounded">
         <h1>Submissions</h1>
         <br/>
-        {% for submission in submissions %}
+        {% for submission in submissions|reverse %}
             {% for problem in problems %}
                 {% if problem.id == submission.problem_id %}
                     <div  class="shadow p-3 mb-5 bg-body rounded">
