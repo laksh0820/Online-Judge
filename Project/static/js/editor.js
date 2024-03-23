@@ -69,7 +69,7 @@ run_btn.addEventListener('click',async () => {
         headers: {
             'content-type': 'application/json',
             'Content-Type': 'application/json',
-            'X-RapidAPI-Key': '63a304c85bmsh898f484b92ac5dfp158cf8jsne847cf5be12f',
+            'X-RapidAPI-Key': 'bf1c68d90fmsh23eab7668080859p1cb108jsn2275494bdbe0',
             'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         },
         processData: true,

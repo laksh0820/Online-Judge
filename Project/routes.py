@@ -283,7 +283,7 @@ def solve_problem(problem_id):
         headers = {
             "content-type": "application/json",
             "Content-Type": "application/json",
-            "X-RapidAPI-Key": "63a304c85bmsh898f484b92ac5dfp158cf8jsne847cf5be12f",
+            "X-RapidAPI-Key": 'bf1c68d90fmsh23eab7668080859p1cb108jsn2275494bdbe0',
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com"
         }
 
@@ -302,7 +302,7 @@ def solve_problem(problem_id):
         submit_solution = Submissions()
         submit_solution.user_code = userCode
         submit_solution.user_id = current_user.id
-        submit_solution.problem_id = problem_id
+        submit_solution.problem_id = output['problem_id']
         submit_solution.status = status
 
         try:
@@ -312,6 +312,5 @@ def solve_problem(problem_id):
             flash("There is a problem in submitting the solution. Please Try Again")
 
         flash(status,status)
-        print(status)
         problems = Problem.query.all()
         return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})

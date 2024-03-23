@@ -20,16 +20,16 @@
     <div class="container-fluid p-2 mb-3 rounded">
         <h2 class="text-center"><p class=" text-primary-emphasis fw-bolder">{{Problem_Parameters[1]}}</p></h2>
     </div>
-    <h4 class="text-center"><small class="text-primary-emphasis">Expected Time : {{Problem_Parameters[5]}} seconds</small></h4>
-    <h4 class="text-center"><small class="text-primary-emphasis">Expected Space : {{Problem_Parameters[6]}} KB</small></h4>
+    <h4 class="text-center"><small class="text-primary-emphasis"><b>Expected Time </b> {{Problem_Parameters[5]}} seconds</small></h4>
+    <h4 class="text-center"><small class="text-primary-emphasis"><b>Expected Space </b>: {{Problem_Parameters[6]}} KB</small></h4>
     <br>
-    <div class="container-fluid p-2 mb-3 rounded">
+    <div class="container-fluid p-2 mb-3 rounded" class="math-inline">
         <h4 class="h4 text-center"><p class="text-primary">Problem Statement</p></h4>
         {% for text in Problem_Parameters[2] %}
             {%- if text == '\n' -%}
                 <br/>
             {%- else -%}
-                {{text}}
+                {{ text }}  
             {%- endif -%}
         {% endfor %}
         </br>
