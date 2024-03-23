@@ -312,5 +312,7 @@ def solve_problem(problem_id):
             flash("There is a problem in submitting the solution. Please Try Again")
 
         flash(status,status)
+        print(API_data)
         problems = Problem.query.all()
         return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})
+    

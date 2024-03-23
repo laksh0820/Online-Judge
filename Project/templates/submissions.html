@@ -12,16 +12,21 @@
                     {{ message[1] }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-        {% elif message|first == "Wrong Answer" %}
+        {% elif message|first == "Wrong Answer"%}
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
                     {{ message[1] }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-        {% elif message|first == "Compilation Error" %}
-                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                    {{ message[1] }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+        {% elif message|first == "Time Limit Exceeded" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message[1] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% else %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message[1] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endif %}
     {% endfor %}
     
@@ -40,7 +45,10 @@
                         {% elif submission.status == "Wrong Answer" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Wrong Answer</p>
-                        {% else %}
+                        {% elif submission.status == "Time Limit Exceeded" %}
+                            <img src="{{ url_for('static',filename='assets/wrong.png')}}">
+                            <p style="color: red;">Time Limit Exceeded</p>
+                        {% elif submission.status == "Compilation Error" %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
                             <p style="color: yellow;">Compilation error</p>
                         {% endif %}
