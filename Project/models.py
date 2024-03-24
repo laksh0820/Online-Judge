@@ -43,6 +43,8 @@ class Submissions(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     user_code = db.Column(db.String(100000))
     status = db.Column(db.String(100),nullable=False)
+    compile_output = db.Column(db.String(100000))
+    time_take = db.Column(db.Integer)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     problem_id = db.Column(db.Integer,db.ForeignKey('problem.id'))
 

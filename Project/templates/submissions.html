@@ -42,15 +42,24 @@
                         {% if submission.status == "Accepted" %}
                             <img src="{{ url_for('static',filename='assets/right.jpg')}}">
                             <p style="color: green;">Accepted</p>
+                            <br/>
+                            <p>Time Taken: {{ submission.time_taken }}</p>
                         {% elif submission.status == "Wrong Answer" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Wrong Answer</p>
+                            <br/>
+                            <p>Time Taken: {{ submission.time_taken }}</p>
                         {% elif submission.status == "Time Limit Exceeded" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Time Limit Exceeded</p>
+                            <br/>
+                            <p>Time Taken: {{ submission.time_taken }}</p>
                         {% elif submission.status == "Compilation Error" %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
                             <p style="color: yellow;">Compilation error</p>
+                            <br/>
+                            <p>Time Taken: {{ submission.time_taken }}</p>
+                            <p>Compiler ouput : {{ submission.compile_output }}</p>
                         {% endif %}
                         <br/>
                         <pre id="user_code" class="prettyprint">{{ submission.user_code }}</pre>

@@ -104,7 +104,7 @@ def online_coding():
         userCode = output['userCode']
         stdin = output['stdin']
 
-        path = r"C:\Users\Laksh\OneDrive\Documents\GitHub\Project-zetaX\runner_C_files"
+        path = r"./runner_C_files"
 
         # create a separate folder for each submission
         now = datetime.datetime.now()
@@ -112,7 +112,7 @@ def online_coding():
 
         os.system(f"cd {path} && mkdir {now}")
 
-        path = f"{path}\\{now}"
+        path = f"{path}/{now}"
         file_name = "main.c"
         file_path = os.path.join(path, file_name)
 
@@ -131,11 +131,12 @@ def online_coding():
         os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
         time.sleep(2) # Required to compile in 2 seconds
 
-        exe_path = f"{path}\\a.exe"
+        exe_path = f"{path}/a.out"
 
         # if a.exe is created, run and store the output to output.txt
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && cat input.txt | {exe_path} > output.txt")
+            os.system(f"cd {path} && cat input.txt | ./a.out > output.txt")
+            time.sleep(2)
             output_path = os.path.join(path, "output.txt")
             with open(output_path,'r') as f:
                 output = f.read()
@@ -300,6 +301,12 @@ def solve_problem(problem_id):
         return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
     else :
         # Input information, change these according to your request
+
+        # Output variables
+        status = ""
+        time_taken = 0
+        compile_output = None
+
         output = request.get_json()
         problem = Problem.query.filter(Problem.id == output['problem_id']).all()
         pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
@@ -307,11 +314,10 @@ def solve_problem(problem_id):
         userCode = output['userCode']
         test_input = problem[0].judging_testcases
         expected_output = problem[0].exp_testcases_output
-        time_limit = problem[0].exe_time # in seconds
+        time_limit = float(problem[0].exe_time) # in seconds
         memory_limit = problem[0].exe_space # in KB
 
         expected_output_list = re.split(" |\n",expected_output)
-        status = ""
 
         submit_solution = Submissions()
         submit_solution.user_code = userCode
@@ -325,7 +331,7 @@ def solve_problem(problem_id):
         except:
             flash("There is a problem in submitting the solution. Please Try Again")
 
-        path = r"C:\Users\Laksh\OneDrive\Documents\GitHub\Project-zetaX\runner_C_files"
+        path = r"./runner_C_files"
 
         # create a separate folder for each submission
         now = datetime.datetime.now()
@@ -333,7 +339,7 @@ def solve_problem(problem_id):
 
         os.system(f"cd {path} && mkdir {now}")
 
-        path = f"{path}\\{now}"
+        path = f"{path}/{now}"
         file_name = "main.c"
         file_path = os.path.join(path, file_name)
 
@@ -348,39 +354,65 @@ def solve_problem(problem_id):
         f.write(test_input)
         f.close()
 
-        # userCode is stored in userCode.c
-        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
-        time.sleep(2) # Required to compile in 2 seconds
+        # userCode is stored in main.c
+        os.system(f"cd {path}; gcc -Wall main.c 2> compiler_message.txt")
+        time.sleep(1) # Required to compile in 1 second
 
-        exe_path = f"{path}\\a.exe"
+        exe_path = f"{path}/a.out"
 
-        # if a.exe is created, run and store the output to output.txt
+        extra_sys_time = time_limit+1
+
+        # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f".\\timeit {exe_path} -f {path}\\input.txt > {path}\\output.txt")
-            output_path = os.path.join(path, "output.txt")
-            with open(output_path,'r') as f:
-                output = f.read()
-                output_list = re.split(" |\n",output) 
+            os.system(f"cd {path} && timeout {extra_sys_time}s ./a.out < input.txt; echo $? > timeout_status.txt")
+            
+            # Check the timeout status. If time limit exceeds then set status to TLE
+            timeout_status_path = os.path.join(path,"timeout_status.txt")
+            with open(timeout_status_path,'r') as f:
+                timeout_status = f.read()
+            f.close()
+
+            if timeout_status=="124":
+                status = "Time Limit Exceeded"
+                time_taken = time_limit
+            
+            else:
+                # Run the program and get the output.txt and time_taken.txt
+                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
+                
+
+                # Read time_taken.txt
+                time_taken_path = os.path.join(path,"time_taken.txt")
+                with open(time_taken_path,'r') as f:
+                    time_taken = float(f.read())
+
+                f.close()
+
+                # If time_taken is less than the time_limit, read output.txt else set status to TLE 
+                if time_taken<=time_limit:
+                    output_path = os.path.join(path, "output.txt")
+                    with open(output_path,'r') as f:
+                        output = f.read()
+                        output_list = re.split(" |\n",output)
+
+                else:
+                    status = "Time Limit Exceeded"
+                    time_taken = time_limit
+
             compile_output = None
+
         else:
             status = "Compilation Error"
             output = None
+            time_taken = 0
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
-            
-        time.sleep(2)
-        os.remove(f"{path}\\a.exe")
-        os.remove(f"{path}\\compiler_message.txt")
-        os.remove(f"{path}\\input.txt")
-        os.remove(f"{path}\\output.txt")
-        os.remove(f"{path}\\main.c")
-        os.rmdir(path)
 
-        # Analyze the output whether it is compilation_error,as per the expected_output or Wrong_output
-        if status != "Compilation Error":
+
+        # If times are alright, check the output if it is correct
+        if status != "Compilation Error" and status!= "Time Limit Exceeded":
             status = "Accepted"
-            
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
                     if output_list[i] != expected_output_list[i]:
@@ -390,8 +422,12 @@ def solve_problem(problem_id):
                 status = "Wrong Answer"
                     
 
+        # We have status, compile_output and time_taken
+
         # Update status
         submit_solution.status = status
+        submit_solution.compile_output = compile_output
+        submit_solution.time_take = time_taken
         try:
             db.session.commit()
         except:
