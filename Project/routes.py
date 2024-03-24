@@ -356,7 +356,7 @@ def solve_problem(problem_id):
 
         # if a.exe is created, run and store the output to output.txt
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && cat input.txt | {exe_path} > output.txt")
+            os.system(f".\\timeit {exe_path} -f {path}\\input.txt > {path}\\output.txt")
             output_path = os.path.join(path, "output.txt")
             with open(output_path,'r') as f:
                 output = f.read()
@@ -368,7 +368,7 @@ def solve_problem(problem_id):
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
-
+            
         time.sleep(2)
         os.remove(f"{path}\\a.exe")
         os.remove(f"{path}\\compiler_message.txt")
