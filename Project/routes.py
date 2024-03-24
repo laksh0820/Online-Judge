@@ -328,9 +328,12 @@ def solve_problem(problem_id):
         path = r"C:\Users\Laksh\OneDrive\Documents\GitHub\Project-zetaX\runner_C_files"
 
         # create a separate folder for each submission
-        os.system(f"cd {path} && mkdir {submit_solution.id}")
+        now = datetime.datetime.now()
+        now = now.strftime('%Y-%m-%d_%H-%M-%S')
 
-        path = f"{path}\\{submit_solution.id}"
+        os.system(f"cd {path} && mkdir {now}")
+
+        path = f"{path}\\{now}"
         file_name = "main.c"
         file_path = os.path.join(path, file_name)
 
@@ -367,6 +370,12 @@ def solve_problem(problem_id):
                 compile_output = f.read()
 
         time.sleep(2)
+        os.remove(f"{path}\\a.exe")
+        os.remove(f"{path}\\compiler_message.txt")
+        os.remove(f"{path}\\input.txt")
+        os.remove(f"{path}\\output.txt")
+        os.remove(f"{path}\\main.c")
+        os.rmdir(path)
 
         # Analyze the output whether it is compilation_error,as per the expected_output or Wrong_output
         if status != "Compilation Error":
