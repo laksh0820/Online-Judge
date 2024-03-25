@@ -160,8 +160,7 @@ def online_coding():
 
             else:
                 # Run the program and get the output.txt and time_taken.txt
-                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
-                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt ./a.out")
+                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt \\time -f '%U' -o time_taken.txt ./a.out < input.txt > output.txt")
 
                 # Read time_taken.txt
                 time_taken_path = os.path.join(path,"time_taken.txt")
@@ -452,8 +451,7 @@ def solve_problem(problem_id):
 
             else:
                 # Run the program and get the output.txt and time_taken.txt
-                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
-                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt ./a.out")
+                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt \\time -f '%U' -o time_taken.txt ./a.out < input.txt > output.txt")
 
                 # Read time_taken.txt
                 time_taken_path = os.path.join(path,"time_taken.txt")
