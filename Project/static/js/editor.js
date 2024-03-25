@@ -49,7 +49,11 @@ editorLib.init();
 // Events
 
 // Run button
-run_btn.addEventListener('click',async () => {
+run_btn.addEventListener('click',run_btn_func)
+
+function run_btn_func()
+{
+    output_btn_func();
     const userCode = codeEditor.getValue();
     const stdin = input_textarea.value;
     const dict_value = {userCode,stdin};
@@ -79,7 +83,7 @@ run_btn.addEventListener('click',async () => {
             }
         }
    });
-});
+};
 
 // Reset Button
 
@@ -96,12 +100,15 @@ input_btn.addEventListener('click',()=>{
 });
 
 // Output button
-output_btn.addEventListener('click',()=>{
+output_btn.addEventListener('click',output_btn_func)
+
+function output_btn_func()
+{
     input_btn.classList.remove("highlight_btn");
-    // output_btn.classList.add("highlight_btn");
+    output_btn.classList.add("highlight_btn");
     input_textarea.classList.add("hidden");
     output_textarea.classList.remove("hidden");
-});
+};
 
 // Submit button
 submit_btn.addEventListener('click',()=>{
