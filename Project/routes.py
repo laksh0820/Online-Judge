@@ -424,6 +424,15 @@ def solve_problem(problem_id):
                         break
             else:
                 status = "Wrong Answer"
+        
+        # For cleaning up the files
+        # os.remove(f"{path}/a.out")
+        # os.remove(f"{path}/compiler_message.txt")
+        # os.remove(f"{path}/timeout_status.txt")
+        # os.remove(f"{path}/time_taken.txt")
+        # os.remove(f"{path}/input.txt")
+        # os.remove(f"{path}/output.txt")
+        # os.rmdir(path)
                     
 
         # We have status, compile_output and time_taken
