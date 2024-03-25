@@ -22,7 +22,7 @@
                 {{ message[1] }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        {% elif message|first == "Compilation Error" %}
+        {% else %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
                 {{ message[1] }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -43,23 +43,23 @@
                             <img src="{{ url_for('static',filename='assets/right.jpg')}}">
                             <p style="color: green;">Accepted</p>
                             <br/>
-                            <p>Time Taken: {{ submission.time_taken }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
                         {% elif submission.status == "Wrong Answer" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Wrong Answer</p>
                             <br/>
-                            <p>Time Taken: {{ submission.time_taken }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
                         {% elif submission.status == "Time Limit Exceeded" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Time Limit Exceeded</p>
                             <br/>
-                            <p>Time Taken: {{ submission.time_taken }}</p>
-                        {% elif submission.status == "Compilation Error" %}
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
+                        {% else %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
-                            <p style="color: yellow;">Compilation error</p>
+                            <p style="color: yellow;">{{ submission.status }}</p>
                             <br/>
-                            <p>Time Taken: {{ submission.time_taken }}</p>
-                            <p>Compiler ouput : {{ submission.compile_output }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
+                            <pre><b style="font-size: 18px;">Compiler ouput :</b> {{ submission.compile_output }}</pre>
                         {% endif %}
                         <br/>
                         <pre id="user_code" class="prettyprint">{{ submission.user_code }}</pre>

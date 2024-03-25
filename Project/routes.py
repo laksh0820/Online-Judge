@@ -370,23 +370,27 @@ def solve_problem(problem_id):
             timeout_status_path = os.path.join(path,"timeout_status.txt")
             with open(timeout_status_path,'r') as f:
                 timeout_status = f.read()
-            f.close()
+                timeout_status = re.split("\n",timeout_status)
 
-            if timeout_status=="124":
+            if timeout_status[0]==124:
                 status = "Time Limit Exceeded"
                 time_taken = time_limit
-            
+            elif timeout_status[0]==139:
+                status = "Segmentation fault"
+                time_taken = 0
             else:
                 # Run the program and get the output.txt and time_taken.txt
-                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
+                os.system(f'cd {path} && timeout {time_limit} \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
                 
 
                 # Read time_taken.txt
                 time_taken_path = os.path.join(path,"time_taken.txt")
                 with open(time_taken_path,'r') as f:
-                    time_taken = float(f.read())
-
-                f.close()
+                    time_taken = f.read()
+                    if time_taken != '':
+                        time_taken = float(time_taken)
+                    else:
+                        time_taken = 0
 
                 # If time_taken is less than the time_limit, read output.txt else set status to TLE 
                 if time_taken<=time_limit:
@@ -394,7 +398,6 @@ def solve_problem(problem_id):
                     with open(output_path,'r') as f:
                         output = f.read()
                         output_list = re.split(" |\n",output)
-
                 else:
                     status = "Time Limit Exceeded"
                     time_taken = time_limit
@@ -405,13 +408,14 @@ def solve_problem(problem_id):
             status = "Compilation Error"
             output = None
             time_taken = 0
-            compile_output_path = os.path.join(path, "compiler_message.txt")
-            with open(compile_output_path,'r') as f:
-                compile_output = f.read()
+        
+        compile_output_path = os.path.join(path, "compiler_message.txt")
+        with open(compile_output_path,'r') as f:
+            compile_output = f.read()
 
 
         # If times are alright, check the output if it is correct
-        if status != "Compilation Error" and status!= "Time Limit Exceeded":
+        if status != "Compilation Error" and status!= "Time Limit Exceeded" and status!="Segmentation fault":
             status = "Accepted"
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
@@ -427,7 +431,7 @@ def solve_problem(problem_id):
         # Update status
         submit_solution.status = status
         submit_solution.compile_output = compile_output
-        submit_solution.time_take = time_taken
+        submit_solution.time_taken = time_taken
         try:
             db.session.commit()
         except:
