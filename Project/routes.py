@@ -497,7 +497,7 @@ def solve_problem(problem_id):
         # Update status
         submit_solution.status = status
         submit_solution.compile_output = compile_output
-        submit_solution.time_taken = time_taken
+        submit_solution.time_taken = time_taken * 1000
         try:
             db.session.commit()
         except:
