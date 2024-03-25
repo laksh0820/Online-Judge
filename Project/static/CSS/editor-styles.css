@@ -105,6 +105,16 @@ html, body {
     cursor: pointer;
 }
 
+#input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover
+{
+    background-color: #007bff;;
+}
+
+.highlight_btn
+{
+    background-color: #007bff;
+}
+
 .hidden {
     display: none;
 }

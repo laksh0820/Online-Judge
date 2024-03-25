@@ -93,9 +93,9 @@ reset_btn.addEventListener('click',()=>{
 
 // Input button
 input_btn.addEventListener('click',()=>{
-    // output_btn.classList.remove("highlight_btn");
-    input_btn.classList.add("highlight_btn");
+    output_btn.classList.remove("highlight_btn");
     output_textarea.classList.add("hidden");
+    input_btn.classList.add("highlight_btn");
     input_textarea.classList.remove("hidden");
 });
 
@@ -105,8 +105,8 @@ output_btn.addEventListener('click',output_btn_func)
 function output_btn_func()
 {
     input_btn.classList.remove("highlight_btn");
-    output_btn.classList.add("highlight_btn");
     input_textarea.classList.add("hidden");
+    output_btn.classList.add("highlight_btn");
     output_textarea.classList.remove("hidden");
 };
 
