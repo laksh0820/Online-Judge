@@ -315,7 +315,7 @@ def solve_problem(problem_id):
         time_limit = float(problem[0].exe_time) # in seconds
         memory_limit = problem[0].exe_space # in KB
 
-        expected_output_list = re.split(" |\n",expected_output)
+        expected_output_list = expected_output.split()
 
         submit_solution = Submissions()
         submit_solution.user_code = userCode
@@ -368,7 +368,7 @@ def solve_problem(problem_id):
             timeout_status_path = os.path.join(path,"timeout_status.txt")
             with open(timeout_status_path,'r') as f:
                 timeout_status = f.read()
-                timeout_status = re.split("\n",timeout_status)
+                timeout_status = timeout_status.split()
 
             if timeout_status[0]=='124':
                 status = "Time Limit Exceeded"
@@ -395,7 +395,7 @@ def solve_problem(problem_id):
                     output_path = os.path.join(path, "output.txt")
                     with open(output_path,'r') as f:
                         output = f.read()
-                        output_list = re.split(" |\n",output)
+                        output_list = output.split()
                 else:
                     status = "Time Limit Exceeded"
                     time_taken = time_limit
@@ -415,6 +415,8 @@ def solve_problem(problem_id):
         # If times are alright, check the output if it is correct
         if status != "Compilation Error" and status!= "Time Limit Exceeded" and status!="Segmentation fault":
             status = "Accepted"
+            print("The output list is :",output_list)
+            print("The expected output list is :", expected_output_list)
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
                     if output_list[i] != expected_output_list[i]:
