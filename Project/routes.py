@@ -378,7 +378,7 @@ def solve_problem(problem_id):
                 time_taken = 0
             else:
                 # Run the program and get the output.txt and time_taken.txt
-                os.system(f'cd {path} && timeout {time_limit} \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
+                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
                 
 
                 # Read time_taken.txt
