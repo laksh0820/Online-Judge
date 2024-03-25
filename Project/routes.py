@@ -300,8 +300,6 @@ def solve_problem(problem_id):
         pblm_parameters_list = [problem[0].id , problem[0].title , problem[0].description , problem[0].sample_input , problem[0].sample_output , problem[0].exe_time , problem[0].exe_space]
         return render_template('problem.html' , Problem_Parameters = pblm_parameters_list)
     else :
-        # Input information, change these according to your request
-
         # Output variables
         status = ""
         time_taken = 0

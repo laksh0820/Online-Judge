@@ -5,8 +5,7 @@
 
 .theme
 {
-    color:#fff;
-    background-color: #000000;
+    color:#000000;
     font-family: 'Courier New';
 }
 
@@ -17,12 +16,12 @@
 
 .footer-theme
 {
-    color:#fff;
-    margin-top:50px;
-    margin-bottom: 10px;
-    padding:10px;
-    height: 100px;
-    background-color: #000000;
+    color:#000000;
+    height: 250px;
+    margin-top: 40px;
+    padding-top: 30px;
+    bottom: 0;
+    text-align: center;
 }
 
 .card-img-top {
