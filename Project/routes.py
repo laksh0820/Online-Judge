@@ -476,8 +476,6 @@ def solve_problem(problem_id):
         # If times are alright, check the output if it is correct
         if status != "Compilation Error" and status!= "Time Limit Exceeded" and status!="Segmentation fault":
             status = "Accepted"
-            print("The output list is :",output_list)
-            print("The expected output list is :", expected_output_list)
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
                     if output_list[i] != expected_output_list[i]:

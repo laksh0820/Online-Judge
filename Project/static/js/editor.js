@@ -54,6 +54,9 @@ run_btn.addEventListener('click',async () => {
     const stdin = input_textarea.value;
     const dict_value = {userCode,stdin};
 
+    // Set value to empty upon click
+    output_textarea.value = "";
+
    $.ajax({
         url:"/onlineIDE",
         type:"POST",
