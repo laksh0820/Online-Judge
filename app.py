@@ -1,8 +1,4 @@
-from Project import app,db
-
-app.app_context().push()
-db.create_all()
-
+from Project import app
 
 if __name__ == '__main__':
     app.run(debug=True)

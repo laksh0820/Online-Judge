@@ -33,7 +33,6 @@ def contestant_required(inner_func):
     wrapped_function_contestant.__name__ = inner_func.__name__
     return wrapped_function_contestant
 
-
 # Sign in to an existing user
 @app.route('/signin',methods=['GET','POST'])
 def signin():
@@ -100,9 +99,12 @@ def online_coding():
     if request.method == 'GET':
         return render_template('onlineIDE.html')
     else:
-        output = request.get_json()
-        userCode = output['userCode']
-        stdin = output['stdin']
+        output_json = request.get_json()
+        userCode = output_json['userCode']
+        stdin = output_json['stdin']
+        max_allowed_time = 5+2 # seconds
+        output = ""
+        compile_output = ""
 
         path = r"./runner_C_files"
 
@@ -133,22 +135,76 @@ def online_coding():
 
         exe_path = f"{path}/a.out"
 
-        # if a.exe is created, run and store the output to output.txt
+        # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && cat input.txt | ./a.out > output.txt")
-            time.sleep(2)
-            output_path = os.path.join(path, "output.txt")
-            with open(output_path,'r') as f:
-                output = f.read()
-            compile_output = None
+            os.system(f"cd {path} && timeout {max_allowed_time}s ./a.out < input.txt; echo $? > timeout_status.txt")
+            
+            # Check the timeout status. If time limit exceeds then set status to TLE
+            timeout_status_path = os.path.join(path,"timeout_status.txt")
+            with open(timeout_status_path,'r') as f:
+                timeout_status = f.read()
+                timeout_status = timeout_status.split()
+
+            if timeout_status[0]=='124':
+                output = None
+                compile_output = "Time Limit Exceeded"
+                time_taken = max_allowed_time
+
+            elif timeout_status[0]=='139':
+                output = None
+                compile_output = "Segmentation fault"
+                time_taken = 0
+
+            else:
+                # Run the program and get the output.txt and time_taken.txt
+                os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
+                
+
+                # Read time_taken.txt
+                time_taken_path = os.path.join(path,"time_taken.txt")
+                with open(time_taken_path,'r') as f:
+                    time_taken = f.read()
+                    if time_taken != '':
+                        time_taken = float(time_taken)
+                    else:
+                        time_taken = 0
+
+                # If time_taken is less than the time_limit, read output.txt else set status to TLE 
+                if time_taken <= max_allowed_time:
+                    output_path = os.path.join(path, "output.txt")
+                    with open(output_path,'r') as f:
+                        output = f.read()
+                else:
+                    output = None
+                    compile_output = "Time Limit Exceeded"
+                    time_taken = max_allowed_time
+
+                os.remove(f"{path}/time_taken.txt")
+                os.remove(f"{path}/output.txt")
+
+            os.remove(f"{path}/timeout_status.txt")
+            os.remove(f"{path}/a.out")
         else:
             output = None
+            time_taken = 0
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
+        
 
-        time.sleep(2)
-        return jsonify({'stdout':output,'compile_output':compile_output})
+        # Remove the create files
+        os.remove(f"{path}/main.c")
+        os.remove(f"{path}/compiler_message.txt")
+        os.remove(f"{path}/input.txt")
+        os.rmdir(path)
+
+        # Execution time
+        exe_time = "\nExecution time of the programme is : "+str(time_taken * 1000)+" milliseconds"
+        if output != None:
+            output = output + exe_time
+        compile_output = compile_output + exe_time
+
+        return jsonify({'stdout':output,'compile_output':compile_output,'time_taken':time_taken})
 
 # Post a new Problem
 @app.route('/judge',methods = ['GET','POST'])
@@ -400,6 +456,11 @@ def solve_problem(problem_id):
                     status = "Time Limit Exceeded"
                     time_taken = time_limit
 
+                os.remove(f"{path}/time_taken.txt")
+                os.remove(f"{path}/output.txt")
+            
+            os.remove(f"{path}/timeout_status.txt")
+            os.remove(f"{path}/a.out")
             compile_output = None
 
         else:
@@ -426,15 +487,11 @@ def solve_problem(problem_id):
                 status = "Wrong Answer"
         
         # For cleaning up the files
-        # os.remove(f"{path}/a.out")
-        # os.remove(f"{path}/compiler_message.txt")
-        # os.remove(f"{path}/timeout_status.txt")
-        # os.remove(f"{path}/time_taken.txt")
-        # os.remove(f"{path}/input.txt")
-        # os.remove(f"{path}/output.txt")
-        # os.rmdir(path)
+        os.remove(f"{path}/main.c")
+        os.remove(f"{path}/compiler_message.txt")
+        os.remove(f"{path}/input.txt")
+        os.rmdir(path)
                     
-
         # We have status, compile_output and time_taken
 
         # Update status

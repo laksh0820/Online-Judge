@@ -38,23 +38,23 @@
                             <img src="{{ url_for('static',filename='assets/right.jpg')}}">
                             <p style="color: green;">Accepted</p>
                             <br/>
-                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} seconds</p>
                         {% elif submission.status == "Wrong Answer" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Wrong Answer</p>
                             <br/>
-                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} seconds</p>
                         {% elif submission.status == "Time Limit Exceeded" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Time Limit Exceeded</p>
                             <br/>
-                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} seconds</p>
                         {% else %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
                             <p style="color: yellow;">{{ submission.status }}</p>
                             <br/>
-                            <p><b style="font-size: 18px;">Time Taken:</b> {{ submission.time_taken }}</p>
-                            <pre><b style="font-size: 18px;">Compiler ouput :</b> {{ submission.compile_output }}</pre>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} seconds</p>
+                            <pre><b style="font-size: 18px;">Compiler ouput :</b> <br/>{{ submission.compile_output }}</pre>
                         {% endif %}
                         <br/>
                         <pre id="user_code" class="prettyprint">{{ submission.user_code }}</pre>
