@@ -282,7 +282,7 @@ def delete_submission(id):
         db.session.delete(submission)
         db.session.commit()
 
-        flash("Successfully deleted")
+        flash("Successfully deleted","message")
 
         return render_template('submissions.html',submissions=current_user.submissions,problems=problems)
     except:
@@ -370,10 +370,10 @@ def solve_problem(problem_id):
                 timeout_status = f.read()
                 timeout_status = re.split("\n",timeout_status)
 
-            if timeout_status[0]==124:
+            if timeout_status[0]=='124':
                 status = "Time Limit Exceeded"
                 time_taken = time_limit
-            elif timeout_status[0]==139:
+            elif timeout_status[0]=='139':
                 status = "Segmentation fault"
                 time_taken = 0
             else:
