@@ -6,6 +6,7 @@ from Project.forms import SignInForm,SignUpForm,ProblemForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
+from resource import *
 import time
 import datetime
 import re
@@ -149,16 +150,18 @@ def online_coding():
                 output = None
                 compile_output = "Time Limit Exceeded"
                 time_taken = max_allowed_time
+                memory_taken = 0
 
             elif timeout_status[0]=='139':
                 output = None
                 compile_output = "Segmentation fault"
                 time_taken = 0
+                memory_taken = 0
 
             else:
                 # Run the program and get the output.txt and time_taken.txt
                 os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
-                
+                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt ./a.out")
 
                 # Read time_taken.txt
                 time_taken_path = os.path.join(path,"time_taken.txt")
@@ -168,6 +171,11 @@ def online_coding():
                         time_taken = float(time_taken)
                     else:
                         time_taken = 0
+                
+                # Read memory_taken.txt
+                memory_taken_path = os.path.join(path,"memory_taken.txt")
+                with open(memory_taken_path,'r') as f:
+                    memory_taken = float(f.read())
 
                 # If time_taken is less than the time_limit, read output.txt else set status to TLE 
                 if time_taken <= max_allowed_time:
@@ -180,6 +188,7 @@ def online_coding():
                     time_taken = max_allowed_time
 
                 os.remove(f"{path}/time_taken.txt")
+                os.remove(f"{path}/memory_taken.txt")
                 os.remove(f"{path}/output.txt")
 
             os.remove(f"{path}/timeout_status.txt")
@@ -187,6 +196,7 @@ def online_coding():
         else:
             output = None
             time_taken = 0
+            memory_taken = 0
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
@@ -199,12 +209,15 @@ def online_coding():
         os.rmdir(path)
 
         # Execution time
-        exe_time = "\nExecution time of the programme is : "+str(time_taken * 1000)+" milliseconds"
+        exe_time = "\nExecution time of the program is : "+str(time_taken * 1000)+" milliseconds"
+        exe_memory = "\nExecution memory of the program is : "+str(memory_taken)+" kilobytes"
         if output != None:
             output = output + exe_time
+            output = output + exe_memory
         compile_output = compile_output + exe_time
+        compile_output = compile_output + exe_memory
 
-        return jsonify({'stdout':output,'compile_output':compile_output,'time_taken':time_taken})
+        return jsonify({'stdout':output,'compile_output':compile_output})
 
 # Post a new Problem
 @app.route('/judge',methods = ['GET','POST'])
@@ -359,6 +372,7 @@ def solve_problem(problem_id):
         # Output variables
         status = ""
         time_taken = 0
+        memory_taken = 0
         compile_output = None
 
         output = request.get_json()
@@ -429,13 +443,17 @@ def solve_problem(problem_id):
             if timeout_status[0]=='124':
                 status = "Time Limit Exceeded"
                 time_taken = time_limit
+                memory_taken = 0
+
             elif timeout_status[0]=='139':
                 status = "Segmentation fault"
                 time_taken = 0
+                memory_taken = 0
+
             else:
                 # Run the program and get the output.txt and time_taken.txt
                 os.system(f'cd {path} && \\time -f "%U" -o time_taken.txt ./a.out < input.txt > output.txt')
-                
+                os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt ./a.out")
 
                 # Read time_taken.txt
                 time_taken_path = os.path.join(path,"time_taken.txt")
@@ -445,18 +463,27 @@ def solve_problem(problem_id):
                         time_taken = float(time_taken)
                     else:
                         time_taken = 0
+                
+                # Read memory_taken.txt
+                memory_taken_path = os.path.join(path,"memory_taken.txt")
+                with open(memory_taken_path,'r') as f:
+                    memory_taken = float(f.read())
 
                 # If time_taken is less than the time_limit, read output.txt else set status to TLE 
-                if time_taken<=time_limit:
+                if time_taken<=time_limit and memory_taken<=memory_limit:
                     output_path = os.path.join(path, "output.txt")
                     with open(output_path,'r') as f:
                         output = f.read()
                         output_list = output.split()
-                else:
+                elif time_taken > time_limit:
                     status = "Time Limit Exceeded"
                     time_taken = time_limit
+                else:
+                    status = "Memory Limit Exceeded"
+                    memory_taken = memory_limit
 
                 os.remove(f"{path}/time_taken.txt")
+                os.remove(f"{path}/memory_taken.txt")
                 os.remove(f"{path}/output.txt")
             
             os.remove(f"{path}/timeout_status.txt")
@@ -467,14 +494,14 @@ def solve_problem(problem_id):
             status = "Compilation Error"
             output = None
             time_taken = 0
+            memory_taken = 0
         
         compile_output_path = os.path.join(path, "compiler_message.txt")
         with open(compile_output_path,'r') as f:
             compile_output = f.read()
 
-
         # If times are alright, check the output if it is correct
-        if status != "Compilation Error" and status!= "Time Limit Exceeded" and status!="Segmentation fault":
+        if status != "Compilation Error" and status!= "Time Limit Exceeded" and  status != "Memory Limit Exceeded" and status!="Segmentation fault":
             status = "Accepted"
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
@@ -496,6 +523,7 @@ def solve_problem(problem_id):
         submit_solution.status = status
         submit_solution.compile_output = compile_output
         submit_solution.time_taken = time_taken * 1000
+        submit_solution.memory_taken = memory_taken
         try:
             db.session.commit()
         except:

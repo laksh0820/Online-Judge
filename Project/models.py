@@ -45,6 +45,7 @@ class Submissions(db.Model):
     status = db.Column(db.String(100),nullable=False)
     compile_output = db.Column(db.String(100000))
     time_taken = db.Column(db.Float)
+    memory_taken = db.Column(db.Float)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     problem_id = db.Column(db.Integer,db.ForeignKey('problem.id'))
 

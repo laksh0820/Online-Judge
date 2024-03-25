@@ -12,7 +12,7 @@
                     {{ message[1] }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-        {% elif message|first == "Wrong Answer" or message|first == "Time Limit Exceeded" %}
+        {% elif message|first == "Wrong Answer" or message|first == "Time Limit Exceeded" or message|first == "Memory Limit Exceeded" %}
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
                     {{ message[1] }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -39,21 +39,31 @@
                             <p style="color: green;">Accepted</p>
                             <br/>
                             <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
+                            <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
                         {% elif submission.status == "Wrong Answer" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Wrong Answer</p>
                             <br/>
                             <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
+                            <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
                         {% elif submission.status == "Time Limit Exceeded" %}
                             <img src="{{ url_for('static',filename='assets/wrong.png')}}">
                             <p style="color: red;">Time Limit Exceeded</p>
                             <br/>
                             <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
+                            <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
+                        {% elif submission.status == "Memory Limit Exceeded" %}
+                            <img src="{{ url_for('static',filename='assets/wrong.png')}}">
+                            <p style="color: red;">Memory Limit Exceeded</p>
+                            <br/>
+                            <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
+                            <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
                         {% else %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
                             <p style="color: yellow;">{{ submission.status }}</p>
                             <br/>
                             <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
+                            <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
                             <pre><b style="font-size: 18px;">Compiler ouput :</b> <br/>{{ submission.compile_output }}</pre>
                         {% endif %}
                         <br/>
