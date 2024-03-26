@@ -1,18 +1,21 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField,StringField, PasswordField, SubmitField,TextAreaField,RadioField,BooleanField
-from wtforms.validators import DataRequired,EqualTo,Email
+from wtforms.validators import DataRequired,EqualTo,Email,Length
+
+MIN_PASSWORD_LEN = 8
+MAX_PASSWORD_LEN = 12
 
 class SignUpForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
-    password = PasswordField("Password",validators=[DataRequired(),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype")])
-    confirm_password = PasswordField("Confirm-Password",validators=[DataRequired()])
+    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype")])
+    confirm_password = PasswordField("Confirm-Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN)])
     type = RadioField("Type",validators=[DataRequired()],choices=[('Contestant','Contestant'),('Judge','Judge')])
     submit = SubmitField("Submit")
 
 class SignInForm(FlaskForm):
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
-    password = PasswordField("Password",validators=[DataRequired()])
+    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN)])
     remember_me = BooleanField("Remember Me")
     submit = SubmitField("Submit")
 
