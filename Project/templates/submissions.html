@@ -60,7 +60,7 @@
                             <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
                         {% else %}
                             <img src="{{ url_for('static',filename='assets/compilation_error.jpg')}}">
-                            <p style="color: yellow;">{{ submission.status }}</p>
+                            <p style="color: rgb(212, 212, 58);">{{ submission.status }}</p>
                             <br/>
                             <p><b style="font-size: 18px;">Time Taken:</b> {{ "%.2f"|format(submission.time_taken|float) }} milliseconds</p>
                             <p><b style="font-size: 18px;">Memory Taken:</b> {{ "%.2f"|format(submission.memory_taken|float) }} kilobytes</p>
