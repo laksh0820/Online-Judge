@@ -1,0 +1,11 @@
+main.c: In function ‘main’:
+main.c:5:18: warning: division by zero [-Wdiv-by-zero]
+    5 |     printf("%f",1/0);
+      |                  ^
+main.c:5:14: warning: format ‘%f’ expects argument of type ‘double’, but argument 2 has type ‘int’ [-Wformat=]
+    5 |     printf("%f",1/0);
+      |             ~^  ~~~
+      |              |   |
+      |              |   int
+      |              double
+      |             %d

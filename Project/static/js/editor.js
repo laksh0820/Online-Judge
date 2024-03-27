@@ -72,11 +72,11 @@ function run_btn_func()
             let stdout = response["stdout"];
             let compile_output = response["compile_output"];
 
-            if(stdout!=null){
+            if(stdout!=""){
                 output_textarea.value = stdout;   
             }
             else{
-                if(compile_output!=null){
+                if(compile_output!=""){
                     output_textarea.value = compile_output;
                 }
                 else output_textarea.value = "";

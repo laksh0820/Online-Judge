@@ -106,6 +106,8 @@ def online_coding():
         max_allowed_time = 5+2 # seconds
         output = ""
         compile_output = ""
+        time_taken = 0
+        memory_taken = 0
 
         path = r"./runner_C_files"
 
@@ -146,19 +148,7 @@ def online_coding():
                 timeout_status = f.read()
                 timeout_status = timeout_status.split()
 
-            if timeout_status[0]=='124':
-                output = None
-                compile_output = "Time Limit Exceeded"
-                time_taken = max_allowed_time
-                memory_taken = 0
-
-            elif timeout_status[0]=='139':
-                output = None
-                compile_output = "Segmentation fault"
-                time_taken = 0
-                memory_taken = 0
-
-            else:
+            if timeout_status[0]=='0':
                 # Run the program and get the output.txt and time_taken.txt
                 os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt \\time -f '%U' -o time_taken.txt ./a.out < input.txt > output.txt")
 
@@ -182,25 +172,45 @@ def online_coding():
                     with open(output_path,'r') as f:
                         output = f.read()
                 else:
-                    output = None
+                    output = ""
                     compile_output = "Time Limit Exceeded"
                     time_taken = max_allowed_time
 
                 os.remove(f"{path}/time_taken.txt")
                 os.remove(f"{path}/memory_taken.txt")
                 os.remove(f"{path}/output.txt")
+            
+            elif timeout_status[0]=='124':
+                output = ""
+                compile_output = "Time Limit Exceeded"
+                time_taken = max_allowed_time
+                memory_taken = 0
+
+            elif timeout_status[0]=='139':
+                output = ""
+                compile_output = "Segmentation fault"
+                time_taken = 0
+                memory_taken = 0
+            
+            else:
+                output = ""
+                compile_output_path = os.path.join(path, "compiler_message.txt")
+                with open(compile_output_path,'r') as f:
+                    compile_output = f.read()
 
             os.remove(f"{path}/timeout_status.txt")
             os.remove(f"{path}/a.out")
         else:
-            output = None
-            time_taken = 0
-            memory_taken = 0
+            output = ""
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
         
-
+        if output == "":
+            compile_output_path = os.path.join(path, "compiler_message.txt")
+            with open(compile_output_path,'r') as f:
+                compile_output = f.read()
+        
         # Remove the create files
         os.remove(f"{path}/main.c")
         os.remove(f"{path}/compiler_message.txt")
@@ -210,7 +220,7 @@ def online_coding():
         # Execution time
         exe_time = "\nExecution time of the program is : "+str(time_taken * 1000)+" milliseconds"
         exe_memory = "\nExecution memory of the program is : "+str(memory_taken)+" kilobytes"
-        if output != None:
+        if output != "":
             output = output + exe_time
             output = output + exe_memory
         compile_output = compile_output + exe_time
@@ -372,7 +382,7 @@ def solve_problem(problem_id):
         status = ""
         time_taken = 0
         memory_taken = 0
-        compile_output = None
+        compile_output = ""
 
         output = request.get_json()
         problem = Problem.query.filter(Problem.id == output['problem_id']).all()
@@ -439,17 +449,7 @@ def solve_problem(problem_id):
                 timeout_status = f.read()
                 timeout_status = timeout_status.split()
 
-            if timeout_status[0]=='124':
-                status = "Time Limit Exceeded"
-                time_taken = time_limit
-                memory_taken = 0
-
-            elif timeout_status[0]=='139':
-                status = "Segmentation fault"
-                time_taken = 0
-                memory_taken = 0
-
-            else:
+            if timeout_status[0]=='0':
                 # Run the program and get the output.txt and time_taken.txt
                 os.system(f"cd {path} && command time -f '%M' -o memory_taken.txt \\time -f '%U' -o time_taken.txt ./a.out < input.txt > output.txt")
 
@@ -483,23 +483,41 @@ def solve_problem(problem_id):
                 os.remove(f"{path}/time_taken.txt")
                 os.remove(f"{path}/memory_taken.txt")
                 os.remove(f"{path}/output.txt")
+
+            elif timeout_status[0]=='124':
+                status = "Time Limit Exceeded"
+                time_taken = time_limit
+                memory_taken = 0
+
+            elif timeout_status[0]=='139':
+                status = "Segmentation fault"
+                time_taken = 0
+                memory_taken = 0
             
+            else:
+                status = "Runtime Error"
+                time_taken = 0
+                memory_taken = 0
+
             os.remove(f"{path}/timeout_status.txt")
             os.remove(f"{path}/a.out")
-            compile_output = None
+            compile_output = ""
 
         else:
             status = "Compilation Error"
-            output = None
+            output = ""
             time_taken = 0
             memory_taken = 0
         
         compile_output_path = os.path.join(path, "compiler_message.txt")
         with open(compile_output_path,'r') as f:
             compile_output = f.read()
+        
+        if compile_output != "" and status == "":
+            status = "Compilation Error"
 
         # If times are alright, check the output if it is correct
-        if status != "Compilation Error" and status!= "Time Limit Exceeded" and  status != "Memory Limit Exceeded" and status!="Segmentation fault":
+        if status == "":
             status = "Accepted"
             if len(output_list) == len(expected_output_list):
                 for i in range(0,len(output_list)):
