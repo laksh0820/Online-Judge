@@ -6,7 +6,7 @@ from Project.forms import SignInForm,SignUpForm,ProblemForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
-from resource import *
+# from resource import *
 import time
 import datetime
 import re
