@@ -140,7 +140,7 @@ def online_coding():
 
         # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && timeout {max_allowed_time}s ./a.out < input.txt; echo $? > timeout_status.txt")
+            os.system(f"cd {path} && timeout {max_allowed_time}s ./a.out < input.txt > output.txt; echo $? > timeout_status.txt")
             
             # Check the timeout status. If time limit exceeds then set status to TLE
             timeout_status_path = os.path.join(path,"timeout_status.txt")
@@ -441,7 +441,7 @@ def solve_problem(problem_id):
 
         # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && timeout {extra_sys_time}s ./a.out < input.txt; echo $? > timeout_status.txt")
+            os.system(f"cd {path} && timeout {extra_sys_time}s ./a.out < input.txt > output.txt; echo $? > timeout_status.txt")
             
             # Check the timeout status. If time limit exceeds then set status to TLE
             timeout_status_path = os.path.join(path,"timeout_status.txt")
