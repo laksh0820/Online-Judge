@@ -8,12 +8,12 @@ are created which needs to be done manually through python interpreter.
 
 Run the following commands in the python shell:
 
-$>$ $>$ $>$ from Project import app
+$>$$>$$>$ from Project import app
 
  
-$>$ $>$ $>$ db app.app_context().push()
+$>$$>$$>$ db app.app_context().push()
 
  
-$>$ $>$ $>$ db.create_all()
+$>$$>$$>$ db.create_all()
 
 For running the app, just run the app.py file
