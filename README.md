@@ -11,7 +11,7 @@ Run the following commands in the python shell:
 $>$ $>$ $>$ from Project import app
 
  
-$>$ $>$ $>$db app.app_context().push()
+$>$ $>$ $>$ db app.app_context().push()
 
  
 $>$ $>$ $>$ db.create_all()
