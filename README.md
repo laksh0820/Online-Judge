@@ -8,7 +8,7 @@ are created which needs to be done manually through python interpreter.
 
 Run the following commands in the python shell:
 
-> > > from Project import app
+$\ge$ > > from Project import app
 
  
 > > > db app.app_context().push()
