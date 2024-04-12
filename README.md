@@ -8,9 +8,9 @@ are created which needs to be done manually through python interpreter.
 
 Run the following commands in the python shell:
 
-$>>>$ from Project import app
+$>>>$ from Project import app,db
 
-$>>>$ db app.app_context().push()
+$>>>$ app.app_context().push()
 
 $>>>$ db.create_all()
 
