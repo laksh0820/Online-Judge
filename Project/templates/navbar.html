@@ -15,7 +15,7 @@
           <li class="nav-item">
             <a class="nav-link pill" href="{{ url_for('online_coding')}}">Online IDE</a>
           </li>
-        {% if current_user.is_authenticated %}
+          {% if current_user.is_authenticated %}
             {% if current_user.type == 'Judge' %}
               <li class="nav-item">
                 <a class="nav-link pill" href="/show_judge_problems/{{current_user.id}}">Problems</a>
@@ -31,6 +31,13 @@
     </div>
         
         {% if current_user.is_authenticated %}
+            {% if current_user.is_confirmed == False %}
+              <div class="nav nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link pill" href="/inactive">Activate account</a>
+                </li>
+              </div>
+            {% endif %}
           <div class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>

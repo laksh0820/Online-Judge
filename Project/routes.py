@@ -1,15 +1,15 @@
 from flask import render_template,redirect,request,flash,url_for,jsonify
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,current_user,logout_user
-from Project import app,db
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Message
+from Project import app,db,mail
 from Project.forms import SignInForm,SignUpForm,ProblemForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
-# from resource import *
 import time
 import datetime
-import re
 
 # Home Page
 @app.route('/')
@@ -33,6 +33,81 @@ def contestant_required(inner_func):
         return inner_func(*args,**kwargs)
     wrapped_function_contestant.__name__ = inner_func.__name__
     return wrapped_function_contestant
+
+def confirmation_required(inner_func):
+    def wrapper(*args,**kwargs):
+        if current_user.is_confirmed == False:
+            flash("Please confirm your email to access this page",'warning')
+            return redirect(url_for('home'))
+        return inner_func(*args,**kwargs)
+    wrapper.__name__ = inner_func.__name__
+    return wrapper
+
+# To generate token from User email
+def generate_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email,salt=app.config['SECURITY_PASSWORD_SALT'])
+
+# To confirm the token and return the email
+def confirm_token(token,expiration = 3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(token, salt = app.config['SECURITY_PASSWORD_SALT'], max_age=expiration)
+        return email
+    except Exception:
+        return False
+
+# To confirm the email
+@app.route('/confirm_email/<token>', methods=['GET','POST'])
+@login_required
+def confirm_email(token):
+    if current_user.is_confirmed:
+        flash("Account already confirmed",'success')
+        return redirect(url_for('home'))
+    email = confirm_token(token)
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.email == email:
+        user.is_confirmed = True
+        db.session.add(user)
+        db.session.commit()
+        flash("You have successfully confirmed your email.")
+        return redirect(url_for('home'))
+    flash("Token expired or invalid.Please register again..")
+    return redirect(url_for('signup'))
+
+# To send the email
+def send_email(to,subject,template):
+    msg = Message(
+        subject=subject,
+        sender=app.config["MAIL_DEFAULT_SENDER"],
+        recipients=[to],
+        html=template
+    )
+    mail.send(msg)
+
+# To resend the confirmation mail
+@app.route('/resend',methods=['GET','POST'])
+@login_required
+def resend_confirmation_mail():
+    if current_user.is_confirmed:
+        flash("Account already confirmed","success")
+        return redirect(url_for('home'))
+    token = generate_token(current_user.email)
+    confirm_url = url_for('confirm_email',token=token,_external=True)
+    html=render_template('confirm_email.html',confirm_url=confirm_url)
+    subject = "Email validation Project ZetaX"
+    send_email(current_user.email,subject,html)
+    flash("A new confirmation email has been sent.","success")
+    return redirect(url_for('inactive'))
+
+# To render the inactive page
+@app.route('/inactive')
+@login_required
+def inactive():
+    if current_user.is_confirmed == True:
+        flash("Already email confirmed")
+        return redirect(url_for('home'))
+    return render_template('inactive.html')
 
 # Sign in to an existing user
 @app.route('/signin',methods=['GET','POST'])
@@ -70,7 +145,15 @@ def signup():
             try:
                 db.session.add(newUser)
                 db.session.commit()
-                flash("User Added Successfully!!")
+                token = generate_token(newUser.email)
+                confirm_url=url_for('confirm_email',token=token,_external=True)
+                html=render_template('confirm_email.html',confirm_url=confirm_url)
+                subject = "Email validation Project ZetaX"
+                send_email(newUser.email,subject,html)
+
+                login_user(newUser, remember=False)
+
+                flash("User Added Successfully")
             except:
                 return "Unable to enter User to the Database"
             form.name.data = ''
@@ -78,6 +161,8 @@ def signup():
             form.password.data = ''
             form.confirm_password.data = ''
             form.type.data = ''
+
+            return render_template('inactive.html')
         elif user_name is None:
             flash('This email already exits. Please sign in','error')
         else:
@@ -232,6 +317,7 @@ def online_coding():
 @app.route('/judge',methods = ['GET','POST'])
 @login_required
 @judge_required
+@confirmation_required
 def post_problems():
     form = ProblemForm()
     if form.validate_on_submit():
@@ -268,6 +354,7 @@ def post_problems():
 @app.route('/show_judge_problems/<int:id>',methods=['GET','POST'])
 @login_required
 @judge_required
+@confirmation_required
 def show_judge_problems(id):
     judge = User.query.get_or_404(id)
     return render_template('show_judge_problems.html',problems=judge.problems)
@@ -276,6 +363,7 @@ def show_judge_problems(id):
 @app.route('/modify_problem/<int:id>',methods=['GET','POST'])
 @login_required
 @judge_required
+@confirmation_required
 def modify_problem(id):
     problem = Problem.query.get_or_404(id)
     form = ProblemForm()
@@ -332,6 +420,7 @@ def delete_problem(id):
 @app.route('/contestant', methods= ['GET'])   
 @login_required
 @contestant_required
+@confirmation_required
 def show_problems():
     problem_ids = Problem.query.with_entities(Problem.id).all()
     pblm_id_list = [x[0] for x in problem_ids]
@@ -343,6 +432,7 @@ def show_problems():
 @app.route('/get_submissions/<int:id>',methods=['GET','POST'])
 @login_required
 @contestant_required
+@confirmation_required
 def get_submissions(id):
     contestant = User.query.get_or_404(id)
     problems = Problem.query.all()
@@ -352,6 +442,7 @@ def get_submissions(id):
 @app.route('/delete_submission/<int:id>',methods=['GET','POST'])
 @login_required
 @contestant_required
+@confirmation_required
 def delete_submission(id):
     problems = Problem.query.all()
     submission = Submissions.query.get_or_404(id)
@@ -372,6 +463,7 @@ def delete_submission(id):
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
 @login_required
 @contestant_required
+@confirmation_required
 def solve_problem(problem_id):
     if request.method == 'GET':
         problem = Problem.query.filter(Problem.id == problem_id).all()

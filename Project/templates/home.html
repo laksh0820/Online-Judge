@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        {% for message in get_flashed_messages(with_categories = True) %}
-        {% if message|first == "error" %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                        {{ message[1] }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-        {% else %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                        {{ message[1] }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-        {% endif %}
-        {% endfor %}
+  {% for message in get_flashed_messages(with_categories = True) %}
+  {% if message|first == "error" %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                  {{ message[1] }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+  {% elif message|first == "warning" %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                  {{ message[1] }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+  {% else %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                  {{ message[1] }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+  {% endif %}
+  {% endfor %}
         <!-- HEADER -->
         <br/>
             <header class="theme header-padding rounded">

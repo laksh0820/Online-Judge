@@ -15,6 +15,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.String(100), nullable=False,unique=True)
     password = db.Column(db.String(100), nullable=False)
     type = db.Column(db.String(100), nullable=False)
+    is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     submissions = db.relationship('Submissions',backref='user')
     problems = db.relationship('Problem',backref='user')
     
