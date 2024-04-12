@@ -11,6 +11,7 @@ const input_textarea = document.querySelector('#input_textarea');
 const output_textarea = document.querySelector('#output_textarea');
 const file_upload = document.querySelector('#fileToUpload');
 const file_load = document.querySelector('#file_load');
+const file_submit = document.querySelector('#fileUpload')
 
 // decoder function
 
@@ -94,16 +95,7 @@ function run_btn_func()
 reset_btn.addEventListener('click',()=>{
     codeEditor.setValue(defaultCode);
     file_upload.value=null;
-});
-
-// File Upload To Editor Submit Button
-file_load.addEventListener('click',()=>{
-    const file_reader = new FileReader();
-    file_reader.addEventListener("load",()=>{
-        const code_file = file_reader.result;
-        codeEditor.setValue(code_file);
-    });
-    file_reader.readAsText(file_upload.files[0]);
+    file_submit.value=null;
 });
 
 // Input button
@@ -128,18 +120,35 @@ function output_btn_func()
 // Submit button
 submit_btn.addEventListener('click',()=>{
     const userCode = codeEditor.getValue();
+    if (file_submit.files){
+        const file_reader = new FileReader();
+        file_reader.addEventListener("load",()=>{
+            userCode = file_reader.result;
+        });
+        file_reader.readAsText(file_upload.files[0]);
+    };
     const problem_id = document.getElementById('problem_id').getAttribute('myid');
     const dict_value = {userCode,problem_id};
 
-   $.ajax({
-        url:"/problem/1",
-        type:"POST",
-        contentType:"application/json",
-        data:JSON.stringify(dict_value),
-        success:function(response)
-        {
-            window.location.href = response.redirect
-        }
-   });
+
+    $.ajax({
+            url:"/problem/1",
+            type:"POST",
+            contentType:"application/json",
+            data:JSON.stringify(dict_value),
+            success:function(response)
+            {
+                window.location.href = response.redirect
+            }
+    });
 });
 
+// File Upload To Editor Submit Button
+file_load.addEventListener('click',()=>{
+    const file_reader = new FileReader();
+    file_reader.addEventListener("load",()=>{
+        const code_file = file_reader.result;
+        codeEditor.setValue(code_file);
+    });
+    file_reader.readAsText(file_upload.files[0]);
+});
