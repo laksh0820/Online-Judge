@@ -1,3 +1,6 @@
+// Importing modules
+const fs = require('fs');
+
 // Retrive Elements
 const run_btn = document.querySelector('#editor__run');
 const reset_btn = document.querySelector('#editor__reset');
@@ -6,6 +9,8 @@ const output_btn = document.querySelector('#output_tab');
 const submit_btn = document.querySelector('#submit_tab')
 const input_textarea = document.querySelector('#input_textarea');
 const output_textarea = document.querySelector('#output_textarea');
+const file_upload = document.querySelector('#fileToUpload');
+const file_load = document.querySelector('#file_load');
 
 // decoder function
 
@@ -86,9 +91,19 @@ function run_btn_func()
 };
 
 // Reset Button
-
 reset_btn.addEventListener('click',()=>{
     codeEditor.setValue(defaultCode);
+    file_upload.value=null;
+});
+
+// File Upload To Editor Submit Button
+file_load.addEventListener('click',()=>{
+    const file_reader = new FileReader();
+    file_reader.addEventListener("load",()=>{
+        const code_file = file_reader.result;
+        codeEditor.setValue(code_file);
+    });
+    file_reader.readAsText(file_upload.files[0]);
 });
 
 // Input button
@@ -127,3 +142,4 @@ submit_btn.addEventListener('click',()=>{
         }
    });
 });
+
