@@ -1,4 +1,4 @@
 env
 .env
-instance/
+instance
 __pycache__/
