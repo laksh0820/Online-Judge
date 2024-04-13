@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <br/><br/>
+    <form action="/feedback/{{ problem.id }}" method="POST" class="shadow p-3 mb-5 bg-body rounded">
+            <legend>{{ problem.title }}</legend>
+
+            {{ form.hidden_tag() }}
+
+            {{ form.description.label(class='form-label') }}
+            {{ form.description(class="form-control",placeholder="Describe the problem your are facing here ..") }}
+            <br/>
+            {{ form.submit(class="btn btn-secondary") }}
+    </form>
+
+{% endblock %}

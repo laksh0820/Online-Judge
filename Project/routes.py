@@ -4,7 +4,7 @@ from flask_login import login_user,login_required,current_user,logout_user
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
 from Project import app,db,mail
-from Project.forms import SignInForm,SignUpForm,ProblemForm,ResetPasswordForm,RequestResetForm
+from Project.forms import SignInForm,SignUpForm,ProblemForm,ResetPasswordForm,RequestResetForm,FeedbackForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
@@ -194,10 +194,10 @@ def signup():
                 confirm_url=url_for('confirm_email',token=token,_external=True)
                 html=render_template('confirm_email.html',confirm_url=confirm_url)
                 subject = "Email validation Project ZetaX"
+                print("Sending")
                 send_email(newUser.email,subject,html)
-
+                print("Done SENDING")
                 login_user(newUser, remember=False)
-
                 flash("User Added Successfully")
             except:
                 return "Unable to enter User to the Database"
@@ -687,3 +687,29 @@ def solve_problem(problem_id):
         return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})
 
     
+# Feedback for a problem
+@app.route('/feedback/<int:id>',methods=['GET','POST'])
+def feedback(id):
+    form = FeedbackForm()
+    problem = Problem.query.get_or_404(id)
+    if form.validate_on_submit():
+        subject="Issue in Problem {}".format(problem.title)
+        user = User.query.get_or_404(problem.user_id)
+        if user:
+            receiver=user.email
+            sender=current_user.email
+            description=form.description.data
+            msg = Message(
+                recipients=[receiver],
+                sender=sender,
+                subject=subject
+            )
+            msg.body = description
+            mail.send(msg)
+            flash("Issue is successfully reported")
+            return redirect(url_for('solve_problem',problem_id=problem.id))
+        else:
+            flash('User not found')
+            return redirect(url_for('solve_problem',problem_id=problem.id))
+
+    return render_template('feedback.html',problem=problem,form=form)

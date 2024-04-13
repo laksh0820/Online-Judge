@@ -38,3 +38,7 @@ class ProblemForm(FlaskForm):
     judging_testcases = TextAreaField("Judging Testcases",validators=[DataRequired()])
     exp_testcases_output = TextAreaField("Expected Testcases Output",validators=[DataRequired()])
     submit = SubmitField("Submit")  
+
+class FeedbackForm(FlaskForm):
+    description = TextAreaField('Describe Problem',validators=[DataRequired()])
+    submit=SubmitField("Submit")
