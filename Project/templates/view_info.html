@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        {% for message in get_flashed_messages(with_categories = True) %}
+                {% if message|first == "error" %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                {{ message[1] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                {% else %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                {{ message[1] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                {% endif %}
+        {% endfor %}
+
+    <br/><br/>
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <p><b>Username : </b> {{ user.name }}</p>
+        <p><b>Email: </b> {{ user.email }}</p>
+        <p><b>Type: </b> {{ user.type }}</p>
+        {% if user.is_confirmed == 1 %}
+            <p><b>Verified: </b> Yes </p>
+        {% else %}
+            <p><b>Verified: </b> No</p>
+        {% endif %}
+        
+        <a class="btn btn-secondary" href="/delete_user/{{ user.id }}">Delete</a>
+    </div>
+
+{% endblock %}

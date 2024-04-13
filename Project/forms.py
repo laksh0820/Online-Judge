@@ -42,3 +42,7 @@ class ProblemForm(FlaskForm):
 class FeedbackForm(FlaskForm):
     description = TextAreaField('Describe Problem',validators=[DataRequired()])
     submit=SubmitField("Submit")
+
+class DeleteUserForm(FlaskForm):
+    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN)])
+    delete = SubmitField("Delete")
