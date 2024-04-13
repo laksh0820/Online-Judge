@@ -56,6 +56,7 @@ editorLib.init();
 
 // Run button
 run_btn.addEventListener('click',()=>{
+    output_btn_func();
     const userCode = codeEditor.getValue();
     const stdin = input_textarea.value;
     const dict_value = {userCode,stdin};
@@ -103,19 +104,21 @@ input_btn.addEventListener('click',()=>{
 });
 
 // Output button
-output_btn.addEventListener('click',()=>{
+output_btn.addEventListener('click',output_btn_func)
+function output_btn_func(){
     input_btn.classList.remove("highlight_btn");
     input_textarea.classList.add("hidden");
     output_btn.classList.add("highlight_btn");
     output_textarea.classList.remove("hidden");
-});
+};
 
 
 // Submit button
 if (submit_btn != null){
     const code = {data:codeEditor.getValue()};
     submit_btn.addEventListener('click',()=>{
-        if (file_submit.files){
+        code.data = codeEditor.getValue();
+        if (file_submit.files.length != 0){
             const file_reader = new FileReader();
             file_reader.addEventListener("load",()=>{
                 code.data = file_reader.result;
@@ -131,7 +134,6 @@ if (submit_btn != null){
     function helper_func (){
         const problem_id = document.getElementById('problem_id').getAttribute('myid');
         const dict_value = {userCode:code.data,problem_id};
-        codeEditor.setValue(code.data);
         $.ajax({
                 url:"/problem/1",
                 type:"POST",
