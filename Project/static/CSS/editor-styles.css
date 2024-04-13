@@ -67,7 +67,7 @@ html, body
     overflow: hidden;
 }
 
-#editor__run,#editor__reset 
+#editor__run,#editor__reset,#submit_tab
 {
     border: 0;
     padding: .5em;
@@ -134,7 +134,7 @@ html, body
     cursor: pointer;
 }
 
-#input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover,#file_load:hover,#file_submit:hover
+#input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover,#file_load:hover,#file_submit:hover,#submit_tab:hover
 {
     background-color: #007bff;;
 }
