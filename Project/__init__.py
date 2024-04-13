@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'projectzetaxksdkar37ro8hf83fh3892hmfijw38fh'
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(seconds=20)
 app.config['SECURITY_PASSWORD_SALT']='email-confirmation-for-a-new-user//projectzetaX//23jnrxnl4r'
 app.config['MAIL_DEFAULT_SENDER'] = os.environ['USERNAME']
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_USERNAME'] = os.environ['USERNAME']
 app.config['MAIL_PASSWORD'] = os.environ['APP_PASSWORD']
