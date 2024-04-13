@@ -11,6 +11,7 @@ const input_textarea = document.querySelector('#input_textarea');
 const output_textarea = document.querySelector('#output_textarea');
 const file_upload = document.querySelector('#fileToUpload');
 const file_load = document.querySelector('#file_load');
+const file_submit = document.querySelector('#fileUpload')
 
 // decoder function
 
@@ -54,11 +55,7 @@ editorLib.init();
 // Events
 
 // Run button
-run_btn.addEventListener('click',run_btn_func)
-
-function run_btn_func()
-{
-    output_btn_func();
+run_btn.addEventListener('click',()=>{
     const userCode = codeEditor.getValue();
     const stdin = input_textarea.value;
     const dict_value = {userCode,stdin};
@@ -88,22 +85,13 @@ function run_btn_func()
             }
         }
    });
-};
+});
 
 // Reset Button
 reset_btn.addEventListener('click',()=>{
     codeEditor.setValue(defaultCode);
-    file_upload.value=null;
-});
-
-// File Upload To Editor Submit Button
-file_load.addEventListener('click',()=>{
-    const file_reader = new FileReader();
-    file_reader.addEventListener("load",()=>{
-        const code_file = file_reader.result;
-        codeEditor.setValue(code_file);
-    });
-    file_reader.readAsText(file_upload.files[0]);
+    if (file_upload != null) {file_upload.value=null;};
+    if (file_submit != null) {file_submit.value=null;};
 });
 
 // Input button
@@ -115,31 +103,56 @@ input_btn.addEventListener('click',()=>{
 });
 
 // Output button
-output_btn.addEventListener('click',output_btn_func)
-
-function output_btn_func()
-{
+output_btn.addEventListener('click',()=>{
     input_btn.classList.remove("highlight_btn");
     input_textarea.classList.add("hidden");
     output_btn.classList.add("highlight_btn");
     output_textarea.classList.remove("hidden");
-};
+});
+
 
 // Submit button
-submit_btn.addEventListener('click',()=>{
-    const userCode = codeEditor.getValue();
-    const problem_id = document.getElementById('problem_id').getAttribute('myid');
-    const dict_value = {userCode,problem_id};
+if (submit_btn != null){
+    const code = {data:codeEditor.getValue()};
+    submit_btn.addEventListener('click',()=>{
+        if (file_submit.files){
+            const file_reader = new FileReader();
+            file_reader.addEventListener("load",()=>{
+                code.data = file_reader.result;
+                console.log(code.data);
+            });
+            console.log(code.data);
+            file_reader.readAsText(file_submit.files[0]);
+        };
+        setTimeout(helper_func , 500);
+    });
+    function helper_func (){
+        const problem_id = document.getElementById('problem_id').getAttribute('myid');
+        const dict_value = {userCode:code.data,problem_id};
+        codeEditor.setValue(code.data);
+        $.ajax({
+                url:"/problem/1",
+                type:"POST",
+                contentType:"application/json",
+                data:JSON.stringify(dict_value),
+                success:function(response)
+                {
+                    window.location.href = response.redirect
+                }
+        });
+    };
+}
 
-   $.ajax({
-        url:"/problem/1",
-        type:"POST",
-        contentType:"application/json",
-        data:JSON.stringify(dict_value),
-        success:function(response)
-        {
-            window.location.href = response.redirect
-        }
-   });
-});
+
+// File Upload To Editor Submit Button
+if (file_load != null){
+    file_load.addEventListener('click',()=>{
+        const file_reader = new FileReader();
+        file_reader.addEventListener("load",()=>{
+            const code_file = file_reader.result;
+            codeEditor.setValue(code_file);
+        });
+        file_reader.readAsText(file_upload.files[0]);
+    });
+}
 

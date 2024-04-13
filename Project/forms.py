@@ -8,14 +8,14 @@ MAX_PASSWORD_LEN = 12
 class SignUpForm(FlaskForm):
     name = StringField("Name",validators=[DataRequired()])
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)",granular_message=True,check_deliverability=True)])
-    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype"),Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]",message="Password should contain atleast one lowercase character, one uppercase character,one number and one special character." )])
+    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN),EqualTo('confirm_password',message="Password does not match to Confirm Password. Please retype"),Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]",message="Password should contain atleast one lowercase character, one uppercase character,one number and one special character." )])
     confirm_password = PasswordField("Confirm-Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN)])
     type = RadioField("Type",validators=[DataRequired()],choices=[('Contestant','Contestant'),('Judge','Judge')])
     submit = SubmitField("Submit")
 
 class SignInForm(FlaskForm):
     email = StringField("Email",validators=[DataRequired(),Email(message="Invalid email address (should be of the form something@example.com)")])
-    password = PasswordField("Password",validators=[DataRequired(),Length(min=MIN_PASSWORD_LEN,max=MAX_PASSWORD_LEN)])
+    password = PasswordField("Password",validators=[DataRequired()])
     remember_me = BooleanField("Remember Me")
     submit = SubmitField("Submit")
 

@@ -1,4 +1,5 @@
-:root {
+:root 
+{
     --editor-bg: #eee;
     --editor-border: #3f87a6;
 }
@@ -10,19 +11,22 @@
     box-sizing: border-box;
 }
 
-html, body {
+html, body 
+{
     height: 100%;
     width: 100%;
 }
 
-.heading {
+.heading 
+{
     padding: 0.2rem;
     border: 1px solid #222;
     text-align: center;
     background-color: greenyellow;
 }
 
-.editor {
+.editor 
+{
     height: 100%;
     width: 90%;
     display: flex;
@@ -33,7 +37,8 @@ html, body {
     margin: auto;
 }
 
-.editor__wrapper {
+.editor__wrapper 
+{
     width: 100%;
     height: 100%;
     background: var(--editor-bg);
@@ -43,23 +48,27 @@ html, body {
     overflow: auto;
 }
 
-.editor__body {
+.editor__body 
+{
     display: flex;
     width: 100%;
     overflow: auto;
 }
 
-.editor__footer {
+.editor__footer 
+{
     display: flex;
 }
 
-.editor__footer--right {
+.editor__footer--right 
+{
     flex: 1;
     margin-left: 10px;
     overflow: hidden;
 }
 
-#editor__run,#editor__reset {
+#editor__run,#editor__reset,#submit_tab
+{
     border: 0;
     padding: .5em;
     border: 2px solid #333;
@@ -68,7 +77,18 @@ html, body {
     cursor: pointer;
 }
 
-#file_load {
+#file_load 
+{
+    border: 0;
+    padding: .5em;
+    border: 2px solid #333;
+    margin-top: 1em;
+    width: 170px;
+    cursor: pointer;
+}
+
+#file_submit 
+{
     border: 0;
     padding: .5em;
     border: 2px solid #333;
@@ -114,7 +134,7 @@ html, body {
     cursor: pointer;
 }
 
-#input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover,#file_load:hover
+#input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover,#file_load:hover,#file_submit:hover,#submit_tab:hover
 {
     background-color: #007bff;;
 }
