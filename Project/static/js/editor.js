@@ -123,8 +123,10 @@ if (submit_btn != null){
             });
             console.log(code.data);
             file_reader.readAsText(file_submit.files[0]);
+            setTimeout(helper_func , 500);
+        }else {
+            helper_func();
         };
-        setTimeout(helper_func , 500);
     });
     function helper_func (){
         const problem_id = document.getElementById('problem_id').getAttribute('myid');
