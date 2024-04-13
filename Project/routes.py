@@ -257,6 +257,13 @@ def delete_user(id):
                             return redirect(url_for('delete_user',id=user.id))
                 else: 
                     for problem in user.problems:
+                        for submission in problem.submission:
+                            try:
+                                db.session.delete(submission)
+                                db.session.commit()
+                            except:
+                                flash("There is some issue in deletion. Please Try Again..")
+                                return redirect(url_for('delete_user',id=user.id))
                         try:
                             db.session.delete(problem)
                             db.session.commit()
@@ -508,6 +515,13 @@ def delete_problem(id):
     problem = Problem.query.get_or_404(id)
 
     try:
+        for submission in problem.submission:
+            try:
+                db.session.delete(submission)
+                db.session.commit()
+            except:
+                flash("There is some issue in deletion. Please Try Again..")
+                return render_template('show_judge_problems.html',problems=current_user.problems)
         db.session.delete(problem)
         db.session.commit()
 
