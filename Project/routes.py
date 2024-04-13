@@ -4,7 +4,7 @@ from flask_login import login_user,login_required,current_user,logout_user
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
 from Project import app,db,mail
-from Project.forms import SignInForm,SignUpForm,ProblemForm,ResetPasswordForm,RequestResetForm,FeedbackForm
+from Project.forms import SignInForm,SignUpForm,ProblemForm,ResetPasswordForm,RequestResetForm,FeedbackForm,DeleteUserForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
@@ -223,6 +223,64 @@ def logout():
     logout_user()
     flash("Logged out Successfully")
     return redirect(url_for('signin'))
+
+# View Current user info
+@app.route('/view_info/<int:id>',methods=['GET','POST']) 
+@login_required
+def view_info(id):
+    user = User.query.get_or_404(id)
+    if user:
+        return render_template('view_info.html',user=user)
+    else:
+        flash("User not found")
+        return redirect(url_for('home'))
+
+# Delete an user
+@app.route('/delete_user/<int:id>',methods=['GET','POST'])
+@login_required
+def delete_user(id):
+    form = DeleteUserForm()
+
+    if form.validate_on_submit():
+        user = User.query.get_or_404(id)
+        if user:
+            password = form.password.data
+            if check_password_hash(user.password,str(password)):
+
+                if user.type == 'Contestant':
+                    for submission in user.submissions:
+                        try:
+                            db.session.delete(submission)
+                            db.session.commit()
+                        except:
+                            flash("There is some issue in deleting the user. Please Try Again.. ")
+                            return redirect(url_for('delete_user',id=user.id))
+                else: 
+                    for problem in user.problems:
+                        try:
+                            db.session.delete(problem)
+                            db.session.commit()
+                        except:
+                            flash("There is some issue in deleting the user. Please Try Again.. ")
+                            return redirect(url_for('delete_user',id=user.id))
+                    
+                try:
+                    logout_user()
+                    db.session.delete(user)
+                    db.session.commit()
+                    flash("Successfully deleted",'success')
+                    return redirect(url_for('home'))
+                except:
+                    flash("Oops! There is some problem in deleting the user. Please Try Again..")
+                    return redirect(url_for('delete_user',id=user.id))
+            else:
+                flash("Wrong Password! Try Again",'error')
+                return redirect(url_for('delete_user',id=user.id))
+        else:
+            flash('User not found')
+            return redirect(url_for('home'))
+    
+    return render_template('confirm_for_deletion.html',form=form,user=current_user)
 
 # Display the Online editor
 @app.route('/onlineIDE',methods=['GET','POST'])
