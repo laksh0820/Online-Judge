@@ -4,7 +4,7 @@ from flask_login import login_user,login_required,current_user,logout_user
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
 from Project import app,db,mail
-from Project.forms import SignInForm,SignUpForm,ProblemForm
+from Project.forms import SignInForm,SignUpForm,ProblemForm,ResetPasswordForm,RequestResetForm
 from Project.models import Problem,User,Submissions
 import os
 import os.path
@@ -113,7 +113,7 @@ def inactive():
 @app.route('/signin',methods=['GET','POST'])
 def signin():
     form = SignInForm()
-         
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
@@ -126,7 +126,52 @@ def signin():
         else:
             flash("User not Found!! Try Again",'error')
     return render_template('signin.html',form=form)
-    
+
+# Forget password
+@app.route('/forget_password',methods=['GET','POST'])
+def forget_password():
+    form = RequestResetForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token=generate_token(email)
+            request_URL = url_for('reset_password',token=token,_external=True)
+            template = render_template('reset_password_request.html',request_URL=request_URL)
+            subject = "Reset Password Request"
+            send_email(email,subject,template)
+            flash('An email has been sent to you containing the instructions to reset the password','success')
+            return redirect(url_for('home'))
+        else:
+            flash("User not found",'error')
+            return redirect(url_for('home'))
+
+    return render_template('forget_password.html',form=form)
+        
+# Reset passwrod
+@app.route('/reset_password/<token>',methods=['GET','POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        flash("Already signed in")
+        return redirect(url_for('home'))
+        
+    email=confirm_token(token)
+    user = User.query.filter_by(email=email).first_or_404()
+    if user:
+        form = ResetPasswordForm()
+
+        if form.validate_on_submit():
+            user.password = generate_password_hash(str(form.new_password.data))
+            db.session.commit()
+            flash("Password updated successfully",'success')
+            return redirect(url_for('signin'))
+
+        return render_template('reset_password.html',form=form,token=token)
+
+    flash("Invalid token or token expired. Please Try Again",'error')
+    return redirect(url_for('forget_password'))
+
 # Create a new User
 @app.route('/signup',methods=['GET','POST'])
 def signup():

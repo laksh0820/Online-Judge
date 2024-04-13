@@ -46,6 +46,7 @@
                         <!-- <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a> -->
                 {% else %}
                 {{ form.submit(class="btn btn-secondary")}}
+                <a href="{{ url_for('forget_password') }}" style="margin-left: 15px" class="link-primary">Forget Password</a>
                 {% endif %}
 
         </form>
