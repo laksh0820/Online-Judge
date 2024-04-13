@@ -117,38 +117,62 @@ function output_btn_func()
     output_textarea.classList.remove("hidden");
 };
 
+
 // Submit button
-submit_btn.addEventListener('click',()=>{
-    const userCode = codeEditor.getValue();
-    if (file_submit.files){
-        const file_reader = new FileReader();
-        file_reader.addEventListener("load",()=>{
-            userCode = file_reader.result;
-        });
-        file_reader.readAsText(file_upload.files[0]);
-    };
-    const problem_id = document.getElementById('problem_id').getAttribute('myid');
-    const dict_value = {userCode,problem_id};
-
-
-    $.ajax({
-            url:"/problem/1",
-            type:"POST",
-            contentType:"application/json",
-            data:JSON.stringify(dict_value),
-            success:function(response)
-            {
-                window.location.href = response.redirect
-            }
+if (submit_btn != null){
+    const code = {data:codeEditor.getValue()};
+    submit_btn.addEventListener('click',()=>{
+        if (file_submit.files){
+            const file_reader = new FileReader();
+            file_reader.addEventListener("load",()=>{
+                code.data = file_reader.result;
+                console.log(code.data);
+            });
+            console.log(code.data);
+            file_reader.readAsText(file_submit.files[0]);
+        };
+        setTimeout(helper_func , 500);
+        // const problem_id = document.getElementById('problem_id').getAttribute('myid');
+        // const dict_value = {userCode:code.data,problem_id};
+        // codeEditor.setValue(code.data);
+        // $.ajax({
+        //         url:"/problem/1",
+        //         type:"POST",
+        //         contentType:"application/json",
+        //         data:JSON.stringify(dict_value),
+        //         success:function(response)
+        //         {
+        //             window.location.href = response.redirect
+        //         }
+        // });
     });
-});
+    function helper_func (){
+        const problem_id = document.getElementById('problem_id').getAttribute('myid');
+        const dict_value = {userCode:code.data,problem_id};
+        codeEditor.setValue(code.data);
+        $.ajax({
+                url:"/problem/1",
+                type:"POST",
+                contentType:"application/json",
+                data:JSON.stringify(dict_value),
+                success:function(response)
+                {
+                    window.location.href = response.redirect
+                }
+        });
+    };
+}
+
 
 // File Upload To Editor Submit Button
-file_load.addEventListener('click',()=>{
-    const file_reader = new FileReader();
-    file_reader.addEventListener("load",()=>{
-        const code_file = file_reader.result;
-        codeEditor.setValue(code_file);
+if (file_load != null){
+    file_load.addEventListener('click',()=>{
+        const file_reader = new FileReader();
+        file_reader.addEventListener("load",()=>{
+            const code_file = file_reader.result;
+            codeEditor.setValue(code_file);
+        });
+        file_reader.readAsText(file_upload.files[0]);
     });
-    file_reader.readAsText(file_upload.files[0]);
-});
+}
+
