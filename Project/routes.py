@@ -212,6 +212,8 @@ def signup():
             flash('This email already exits. Please sign in','error')
         else:
             flash('This name already exits. Please enter a different name','error')
+            form.name.data = ''
+            return render_template('signup.html',form=form)
 
         return redirect(url_for('signin'))
     return render_template('signup.html',form = form)
