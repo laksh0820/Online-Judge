@@ -1,4 +1,4 @@
-env_kmb
+env
 .env
-instance
-__pycache__
+instance/
+__pycache__/
