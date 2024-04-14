@@ -122,9 +122,7 @@ if (submit_btn != null){
             const file_reader = new FileReader();
             file_reader.addEventListener("load",()=>{
                 code.data = file_reader.result;
-                console.log(code.data);
             });
-            console.log(code.data);
             file_reader.readAsText(file_submit.files[0]);
             setTimeout(helper_func , 500);
         }else {
