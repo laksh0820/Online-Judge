@@ -17,6 +17,7 @@ app.config['MAIL_USERNAME'] = os.environ['USERNAME']
 app.config['MAIL_PASSWORD'] = os.environ['APP_PASSWORD']
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
