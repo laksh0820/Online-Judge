@@ -1,0 +1,35 @@
+#admin-navbar-collapse
+{
+    border-radius: 10px;
+    width: 100%;
+    padding:10px;
+    font-size: 18px;
+    margin-top: 0px;
+}
+
+.navbar
+{
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-tabs
+{
+    margin-top: 20px;
+}
+
+.pill:hover
+{
+    background: #007bff;
+    color: aliceblue;
+}
+
+body
+{
+    background-color: #ced4da;
+}
+
+.container
+{
+    margin-top: 10px;
+}

@@ -1,0 +1,69 @@
+{% extends admin_base_template %}
+
+{% block head %}
+{{ super() }}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<link rel="stylesheet" href="{{ url_for('static',filename='CSS/style-home.css')}}">
+<link rel="shortcut icon" type = "image/x-icon" href="{{ url_for('static',filename='assets/Icon-for-Webpages.ico')}}">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="border-radius: 0%;" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Project ZetaX</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+
+      <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link pill" href="{{ url_for('home')}}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pill" href="{{ url_for('online_coding')}}">Online IDE</a>
+          </li>
+      </ul>
+    </div>
+        
+              <div class="nav nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link pill" href="/admin">Admin</a>
+                </li>
+              </div>
+            
+            <div class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link pill" href="/view_info/{{ current_user.id }}">View Info</a>
+              </li>
+            </div>
+          <div class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>
+            </li>
+          </div>
+       
+  </div>
+</nav>
+
+{% endblock %}
+
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',filename='CSS/admin-style.css')}}">
+{% endblock %}
+
+{% block tail %}
+{{ super() }}
+<!-- FOOTER -->
+<br/>
+<br/>
+<div class="footer" style="margin-top: 400px;">
+  <hr style="width: 85%;margin-left: 7%;">
+  <footer style="padding-top: 30px;text-align:left;margin-left: 10%;">
+    <h2>Project ZetaX</h2>
+    <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
+    <p>@Copyright Reserved, Project ZetaX</p>
+    <br><br>
+  </footer>
+</div>
+{% endblock %}
