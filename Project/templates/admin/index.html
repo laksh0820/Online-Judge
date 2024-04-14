@@ -3,8 +3,8 @@
 
 {% block body %}
 {{ super() }}
-    <br/><br/>
     <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2>Dashboard</h2><br/>
         <p><b>Username : </b> {{ current_user.name }}</p>
         <p><b>Email: </b> {{ current_user.email }}</p>
         <p><b>Type: </b> {{ current_user.type }}</p>

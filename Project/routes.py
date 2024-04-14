@@ -18,7 +18,7 @@ def home():
 
 def judge_required(inner_func):
     def wrapped_function_judge(*args,**kwargs):
-        if (current_user.is_authenticated) and (current_user.type != 'Judge'):
+        if (current_user.is_authenticated) and (current_user.type != 'Judge' and current_user.type != 'Admin'):
             flash("Please log in as Judge to access this page",'error')
             return redirect(url_for('home'))
         return inner_func(*args,**kwargs)
@@ -27,7 +27,7 @@ def judge_required(inner_func):
 
 def contestant_required(inner_func):
     def wrapped_function_contestant(*args,**kwargs):
-        if (current_user.is_authenticated) and (current_user.type != 'Contestant'):
+        if (current_user.is_authenticated) and (current_user.type != 'Contestant' and current_user.type != 'Admin'):
             flash("Please log in as Contestant to access this page",'error')
             return redirect(url_for('home'))
         return inner_func(*args,**kwargs)
@@ -120,7 +120,10 @@ def signin():
             if check_password_hash(user.password,str(form.password.data)):
                 login_user(user,remember=form.remember_me.data)
                 flash("Logged in Successfully")
-                return render_template('home.html')
+                if user.type == 'Admin':
+                    return redirect(url_for('admin.index'))
+                else:
+                    return render_template('home.html')
             else:
                 flash("Wrong Password!! Try Again",'error')
         else:

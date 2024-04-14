@@ -2,9 +2,15 @@
 {
     border-radius: 10px;
     width: 100%;
-    padding:10px;
-    font-size: 18px;
-    margin-top: 0px;
+    padding:0px;
+    font-size: 0px !important;
+    margin: 0px;
+    height: 0px !important;
+}
+
+.mb-2
+{
+    visibility: hidden;
 }
 
 .navbar
@@ -15,7 +21,12 @@
 
 .nav-tabs
 {
-    margin-top: 20px;
+    margin-top: 10px;
+}
+
+.nav-link:hover
+{
+    background: #ffffff;
 }
 
 .pill:hover
@@ -26,10 +37,19 @@
 
 body
 {
-    background-color: #ced4da;
+    background-color: #ced4da !important;
+}
+
+.table-responsive
+{
+    border-radius: 5px;
 }
 
 .container
 {
     margin-top: 10px;
+    padding: 10px;
+    background-color: #c7dbf2;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px #b8b8b8;
 }

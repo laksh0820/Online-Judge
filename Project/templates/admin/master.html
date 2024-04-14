@@ -20,7 +20,13 @@
             <a class="nav-link pill" href="{{ url_for('home')}}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link pill" href="{{ url_for('online_coding')}}">Online IDE</a>
+            <a class="nav-link pill" href="/admin/user">User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pill" href="/admin/problem">Problem</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link pill" href="/admin/submissions">Submissions</a>
           </li>
       </ul>
     </div>
@@ -30,12 +36,6 @@
                   <a class="nav-link pill" href="/admin">Admin</a>
                 </li>
               </div>
-            
-            <div class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link pill" href="/view_info/{{ current_user.id }}">View Info</a>
-              </li>
-            </div>
           <div class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>

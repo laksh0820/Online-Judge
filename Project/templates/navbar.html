@@ -16,12 +16,12 @@
             <a class="nav-link pill" href="{{ url_for('online_coding')}}">Online IDE</a>
           </li>
           {% if current_user.is_authenticated %}
-            {% if current_user.type == 'Judge' %}
+            {% if current_user.type == 'Judge' or current_user.type == 'Admin' %}
               <li class="nav-item">
                 <a class="nav-link pill" href="/show_judge_problems/{{current_user.id}}">Problems</a>
               </li>
             {% endif %}
-            {% if current_user.type == 'Contestant' %}
+            {% if current_user.type == 'Contestant' or current_user.type == 'Admin' %}
                 <li class="nav-item">
                   <a class="nav-link pill" href="/get_submissions/{{current_user.id}}">Submissions</a>
                 </li>
