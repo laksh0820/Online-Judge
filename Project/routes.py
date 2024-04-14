@@ -643,7 +643,7 @@ def solve_problem(problem_id):
         f.close()
 
         # userCode is stored in main.c
-        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
+        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt -o a.out")
         time.sleep(1) # Required to compile in 1 second
 
         exe_path = f"{path}/a.out"
