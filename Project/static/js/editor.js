@@ -130,6 +130,7 @@ if (submit_btn != null){
         };
     });
     function helper_func (){
+        if (file_submit != null) {file_submit.value=null;};
         const problem_id = document.getElementById('problem_id').getAttribute('myid');
         const dict_value = {userCode:code.data,problem_id};
         $.ajax({
