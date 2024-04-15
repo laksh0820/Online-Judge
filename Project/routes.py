@@ -311,6 +311,7 @@ def online_coding():
         compile_output = ""
         time_taken = 0
         memory_taken = 0
+        flag = 0
 
         path = r"./runner_C_files"
 
@@ -336,14 +337,14 @@ def online_coding():
         f.close()
 
         # userCode is stored in userCode.c
-        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt -o a.out")
+        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
         time.sleep(2) # Required to compile in 2 seconds
 
         exe_path = f"{path}/a.out"
 
         # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && timeout {max_allowed_time}s ./a.out < input.txt > output.txt; echo $? > timeout_status.txt")
+            os.system(f"cd {path} && timeout {max_allowed_time}s ./a.out < input.txt; echo $? > timeout_status.txt")
             
             # Check the timeout status. If time limit exceeds then set status to TLE
             timeout_status_path = os.path.join(path,"timeout_status.txt")
@@ -382,18 +383,21 @@ def online_coding():
                 os.remove(f"{path}/time_taken.txt")
                 os.remove(f"{path}/memory_taken.txt")
                 os.remove(f"{path}/output.txt")
+                flag = 1
             
             elif timeout_status[0]=='124':
                 output = ""
                 compile_output = "Time Limit Exceeded"
                 time_taken = max_allowed_time
                 memory_taken = 0
+                flag = 1
 
             elif timeout_status[0]=='139':
                 output = ""
                 compile_output = "Segmentation fault"
                 time_taken = 0
                 memory_taken = 0
+                flag = 1
             
             else:
                 output = ""
@@ -409,7 +413,7 @@ def online_coding():
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
         
-        if output == "":
+        if output == "" and flag==0:
             compile_output_path = os.path.join(path, "compiler_message.txt")
             with open(compile_output_path,'r') as f:
                 compile_output = f.read()
@@ -588,7 +592,6 @@ def delete_submission(id):
 @app.route('/problem/<int:problem_id>', methods= ['GET' , 'POST'])
 @login_required
 @contestant_required
-@confirmation_required
 def solve_problem(problem_id):
     if request.method == 'GET':
         problem = Problem.query.filter(Problem.id == problem_id).all()
@@ -649,7 +652,7 @@ def solve_problem(problem_id):
         f.close()
 
         # userCode is stored in main.c
-        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt -o a.out")
+        os.system(f"cd {path}; gcc -Wall main.c 2> compiler_message.txt")
         time.sleep(1) # Required to compile in 1 second
 
         exe_path = f"{path}/a.out"
@@ -658,7 +661,7 @@ def solve_problem(problem_id):
 
         # if a.exe is created, run it, else status is compilation error
         if os.path.isfile(exe_path):
-            os.system(f"cd {path} && timeout {extra_sys_time}s ./a.out < input.txt > output.txt; echo $? > timeout_status.txt")
+            os.system(f"cd {path} && timeout {extra_sys_time}s ./a.out < input.txt > output_t.txt; echo $? > timeout_status.txt")
             
             # Check the timeout status. If time limit exceeds then set status to TLE
             timeout_status_path = os.path.join(path,"timeout_status.txt")
@@ -718,6 +721,7 @@ def solve_problem(problem_id):
 
             os.remove(f"{path}/timeout_status.txt")
             os.remove(f"{path}/a.out")
+            os.remove(f"{path}/output_t.txt")
             compile_output = ""
 
         else:
@@ -766,7 +770,7 @@ def solve_problem(problem_id):
         problems = Problem.query.all()
         return jsonify({'redirect':url_for('get_submissions',id=current_user.id)})
 
-    
+
 # Feedback for a problem
 @app.route('/feedback/<int:id>',methods=['GET','POST'])
 def feedback(id):
