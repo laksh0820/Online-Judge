@@ -3,6 +3,13 @@
 
 {% block body %}
 {{ super() }}
+    <!-- HEADER -->
+    <header class="theme header-layout rounded" style="height: 100px;margin-top: 10px;margin-bottom: 10px;">
+    <div class="text-center" style="padding-top: 13px;padding-bottom: 10px;">
+    <h1>Admin</h1>
+    </div>
+    </header>
+    
     <div class="shadow p-3 mb-5 bg-body rounded">
         <h2>Dashboard</h2><br/>
         <p><b>Username : </b> {{ current_user.name }}</p>
