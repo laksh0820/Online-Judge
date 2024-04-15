@@ -30,13 +30,13 @@ class Problem(db.Model):
     __bind_key = 'problems'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(2000), nullable=False)
-    sample_input = db.Column(db.String(100), nullable=False)
-    sample_output = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    sample_input = db.Column(db.Text, nullable=False)
+    sample_output = db.Column(db.Text, nullable=False)
     exe_time = db.Column(db.Integer, nullable=False)
     exe_space = db.Column(db.Integer, nullable=False)
-    judging_testcases = db.Column(db.String(1000000),nullable=False)
-    exp_testcases_output = db.Column(db.String(1000000),nullable=False)
+    judging_testcases = db.Column(db.Text,nullable=False)
+    exp_testcases_output = db.Column(db.Text,nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     submission = db.relationship('Submissions',backref='problem')
 
@@ -46,9 +46,9 @@ class Problem(db.Model):
 class Submissions(db.Model):
     __bind_key = 'submissions'
     id = db.Column(db.Integer,primary_key=True)
-    user_code = db.Column(db.String(100000))
+    user_code = db.Column(db.Text)
     status = db.Column(db.String(100),nullable=False)
-    compile_output = db.Column(db.String(100000))
+    compile_output = db.Column(db.Text)
     time_taken = db.Column(db.Float)
     memory_taken = db.Column(db.Float)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
@@ -71,6 +71,24 @@ class UserView(ModelView):
             return redirect(url_for('home'))
 
 class ProblemView(ModelView):
+    form_widget_args = {
+        'description':{
+            'rows':7
+        },
+        'sample_input':{
+            'rows':3
+        },
+        'sample_output':{
+            'rows':3
+        },
+        'judging_testcases':{
+            'rows':7
+        },
+        'exp_testcases_output':{
+            'rows':7
+        }
+    }
+
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'Admin'
     
@@ -82,6 +100,15 @@ class ProblemView(ModelView):
             return redirect(url_for('home'))
 
 class SubmissionView(ModelView):
+    form_widget_args = {
+        'user_code':{
+            'rows':7
+        },
+        'compile_output':{
+            'rows':7
+        }
+    }
+     
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'Admin'
     

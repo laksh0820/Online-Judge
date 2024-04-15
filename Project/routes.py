@@ -1,4 +1,4 @@
-from flask import render_template,redirect,request,flash,url_for,jsonify
+from flask import Flask,render_template,redirect,request,flash,url_for,jsonify
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,login_required,current_user,logout_user
 from itsdangerous import URLSafeTimedSerializer
