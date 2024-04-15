@@ -26,6 +26,12 @@
         {% else %}
             <p><b>Verified: </b> No</p>
         {% endif %}
+
+        {% if current_user.type == 'Contestant' %}
+                <p><b>Total Problems solved : </b> {{ user.submissions|length() }}</p>
+        {% else %}
+                <p><b>Total Problems posted : </b> {{ user.problems|length() }}</p>
+        {% endif %}
         
         <a class="btn btn-secondary" href="/delete_user/{{ user.id }}">Delete</a>
         <a href="{{ url_for('forget_password') }}" style="margin-left: 15px" class="btn btn-secondary">Change Password</a>
