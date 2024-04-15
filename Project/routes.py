@@ -337,7 +337,7 @@ def online_coding():
         f.close()
 
         # userCode is stored in userCode.c
-        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt")
+        os.system(f"cd {path} && gcc -Wall main.c 2> compiler_message.txt -o a.out")
         time.sleep(2) # Required to compile in 2 seconds
 
         exe_path = f"{path}/a.out"
@@ -652,7 +652,7 @@ def solve_problem(problem_id):
         f.close()
 
         # userCode is stored in main.c
-        os.system(f"cd {path}; gcc -Wall main.c 2> compiler_message.txt")
+        os.system(f"cd {path}; gcc -Wall main.c 2> compiler_message.txt -o a.out")
         time.sleep(1) # Required to compile in 1 second
 
         exe_path = f"{path}/a.out"
