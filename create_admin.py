@@ -21,6 +21,7 @@ def create_admin():
         user.password = generate_password_hash(str(password))
         user.type='Admin'
         user.is_confirmed = True
+        user.is_verified = True
                 
         db.create_all()
         db.session.add(user)

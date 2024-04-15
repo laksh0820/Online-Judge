@@ -17,9 +17,10 @@ class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False,unique=True)
     email = db.Column(db.String(100), nullable=False,unique=True)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     type = db.Column(db.String(100), nullable=False)
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    is_verified = db.Column(db.Boolean, nullable=False, default=False)
     submissions = db.relationship('Submissions',backref='user')
     problems = db.relationship('Problem',backref='user')
     
@@ -59,6 +60,7 @@ class Submissions(db.Model):
 
 class UserView(ModelView):
     column_exclude_list = ['password']
+    column_editable_list = ['is_confirmed' , 'is_verified']
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.type == 'Admin'

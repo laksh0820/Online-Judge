@@ -43,6 +43,15 @@ def confirmation_required(inner_func):
     wrapper.__name__ = inner_func.__name__
     return wrapper
 
+def verification_required(inner_func):
+    def wrapper(*args,**kwargs):
+        if current_user.is_verified == False:
+            flash("Please wait for 24 hours until Admin verifies you",'warning')
+            return redirect(url_for('home'))
+        return inner_func(*args,**kwargs)
+    wrapper.__name__ = inner_func.__name__
+    return wrapper
+
 # To generate token from User email
 def generate_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -70,7 +79,10 @@ def confirm_email(token):
         user.is_confirmed = True
         db.session.add(user)
         db.session.commit()
-        flash("You have successfully confirmed your email.")
+        if current_user.type == 'Contestant':
+            flash("You have successfully confirmed your email.")
+        else:
+            flash("You have successfully confirmed your email. Please wait for 24 hours until Admin verifies you to access Judge page.")
         return redirect(url_for('home'))
     flash("Token expired or invalid.Please register again..")
     return redirect(url_for('signup'))
@@ -200,9 +212,7 @@ def signup():
                 confirm_url=url_for('confirm_email',token=token,_external=True)
                 html=render_template('confirm_email.html',confirm_url=confirm_url)
                 subject = "Email validation Project ZetaX"
-                print("Sending")
                 send_email(newUser.email,subject,html)
-                print("Done SENDING")
                 login_user(newUser, remember=False)
                 flash("User Added Successfully")
             except:
@@ -440,6 +450,7 @@ def online_coding():
 @login_required
 @judge_required
 @confirmation_required
+@verification_required
 def post_problems():
     form = ProblemForm()
     if form.validate_on_submit():
@@ -477,6 +488,7 @@ def post_problems():
 @login_required
 @judge_required
 @confirmation_required
+@verification_required
 def show_judge_problems(id):
     judge = User.query.get_or_404(id)
     return render_template('show_judge_problems.html',problems=judge.problems)
