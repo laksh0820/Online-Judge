@@ -22,6 +22,7 @@ def create_admin():
         user.type='Admin'
         user.is_confirmed = True
                 
+        db.create_all()
         db.session.add(user)
         db.session.commit()
         return 0

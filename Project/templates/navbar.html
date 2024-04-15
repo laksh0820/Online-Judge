@@ -45,11 +45,13 @@
                 </li>
               </div>
             {% endif %}
+            {% if current_user.type != 'Admin' %}
             <div class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link pill" href="/view_info/{{ current_user.id }}">View Info</a>
               </li>
             </div>
+            {% endif %}
           <div class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link pill" href="{{ url_for('logout')}}">Log Out</a>
