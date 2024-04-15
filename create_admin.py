@@ -20,7 +20,7 @@ def create_admin():
         user.email = email
         user.password = generate_password_hash(str(password))
         user.type='Admin'
-        user.is_confirmed = 'True'
+        user.is_confirmed = True
                 
         db.session.add(user)
         db.session.commit()
