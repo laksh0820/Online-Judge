@@ -112,6 +112,10 @@ def inactive():
 # Sign in to an existing user
 @app.route('/signin',methods=['GET','POST'])
 def signin():
+    if current_user.is_authenticated:
+        flash("Already signed in")
+        return redirect(url_for('home'))
+    
     form = SignInForm()
 
     if form.validate_on_submit():
@@ -155,10 +159,6 @@ def forget_password():
 # Reset passwrod
 @app.route('/reset_password/<token>',methods=['GET','POST'])
 def reset_password(token):
-    if current_user.is_authenticated:
-        flash("Already signed in")
-        return redirect(url_for('home'))
-        
     email=confirm_token(token)
     user = User.query.filter_by(email=email).first_or_404()
     if user:
@@ -168,7 +168,10 @@ def reset_password(token):
             user.password = generate_password_hash(str(form.new_password.data))
             db.session.commit()
             flash("Password updated successfully",'success')
-            return redirect(url_for('signin'))
+            if current_user.is_authenticated:
+                return redirect(url_for('home'))
+            else:
+                return redirect(url_for('signin'))
 
         return render_template('reset_password.html',form=form,token=token)
 

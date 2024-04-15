@@ -28,6 +28,7 @@
         {% endif %}
         
         <a class="btn btn-secondary" href="/delete_user/{{ user.id }}">Delete</a>
+        <a href="{{ url_for('forget_password') }}" style="margin-left: 15px" class="btn btn-secondary">Change Password</a>
     </div>
 
 {% endblock %}

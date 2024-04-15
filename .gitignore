@@ -2,3 +2,6 @@ env
 .env
 instance
 __pycache__/
+Project/user.db
+Project/problem_Set.db
+Project/submissions.db
