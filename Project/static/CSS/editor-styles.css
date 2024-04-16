@@ -77,7 +77,7 @@ html, body
     cursor: pointer;
 }
 
-#forget_password
+#forget_password,#feedback
 {
     border: 0;
     padding: .5em;
@@ -150,7 +150,7 @@ html, body
     background-color: #007bff;;
 }
 
-#forget_password:hover
+#forget_password:hover,#feedback:hover
 {
     background-color: crimson;    
 }
