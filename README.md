@@ -6,7 +6,7 @@ Firstly, We are required to install all the dependencies using the following com
 
 pip install -r requirements.txt
 
-For the first time when we are starting the host machine to lauch the
+For the first time when we are starting the host machine to launch the
 website on a local network, we have to ensure that the database tables
 are created.Also, We are required to create an admin for the website.
 
