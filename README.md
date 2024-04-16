@@ -8,7 +8,7 @@ are created.Also, We are required to create an admin for the website.
 
 Run the following commands in the bash shell for creating an admin as well as databases:
 
-$$$ python3 create_admin.py
+python3 create_admin.py
 
 For running the app, just run the app.py file
 
