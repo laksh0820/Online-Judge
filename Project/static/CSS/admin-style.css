@@ -45,6 +45,11 @@ body
     border-radius: 5px;
 }
 
+div > div > table > thead > tr > th > a
+{
+    color: black !important;
+}
+
 .container
 {
     margin-top: 10px;
