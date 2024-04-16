@@ -1,5 +1,11 @@
 # Project ZetaX
 
+<h1 align="center">
+  <img src="Project-ZetaX.png">
+  <br>
+  Project ZetaX: Online Judge
+</h1>
+
 Introduction
 --------------
 Project ZetaX is an online C Programme Judging and Evaluation Software.
