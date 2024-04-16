@@ -53,3 +53,16 @@ body
     border-radius: 10px;
     box-shadow: 2px 2px 4px #b8b8b8;
 }
+
+footer > section > div.container
+{
+    background-color:rgba(43,48,53,1);
+    box-shadow: none;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+a
+{
+    font-size: 18px;
+}

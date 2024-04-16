@@ -52,13 +52,104 @@
 <!-- FOOTER -->
 <br/>
 <br/>
-<div class="footer" style="margin-top: 390px;background-color:#343a40; color:#fff">
-  <hr style="width: 85%;margin-left: 7%;">
-  <footer style="padding-top: 5px;text-align:left;margin-left: 10%;">
-    <h2>Project ZetaX</h2>
-    <p>prepared by Aashirwad Mishra, K Mohan and Lakshya Agrawal</p>
-    <p>@Copyright Reserved, Project ZetaX</p>
-    <br>
-  </footer>
-</div>
+<footer class="text-center text-lg-start bg-body-tertiary text-muted"  data-bs-theme="dark" style="margin-top: 390px;">
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3" style="text-align: center; padding-top: 50px;padding-left: 5px;">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3"></i>Project ZetaX
+          </h6>
+          <p>
+            An online platform for evalution and analysis of C programs.
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Products
+          </h6>
+          <p>
+            <a href="{{ url_for('online_coding')}}" class="text-reset">Online IDE</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Useful links
+          </h6>
+          <p>
+            <a href="{{ url_for('home') }}" class="text-reset">Home</a>
+          </p>
+
+          {% if current_user.is_authenticated == 0 %}
+            <p>
+              <a href="{{ url_for('signin') }}" class="text-reset">Sign in</a>
+            </p>
+            <p>
+              <a href="{{ url_for('signup') }}" class="text-reset">Sign Up</a>
+            </p>
+          </div>
+          {% elif current_user.type == 'Contestant' %}
+          <p>
+            <a href="/contestant" class="text-reset">Problems Set</a>
+          </p>
+          <p>
+            <a href="/get_submissions/{{current_user.id}}" class="text-reset">Submissions</a>
+          </p>
+        </div>
+        {% elif current_user.type == 'Judge' %}
+          <p>
+            <a href="/show_judge_problems/{{current_user.id}}" class="text-reset">Problems</a>
+          </p>
+          <p>
+            <a href="/judge" class="text-reset">Judge</a>
+          </p>
+        </div>
+        {% else %}
+          <p>
+            <a href="/admin" class="text-reset">Admin</a>
+          </p>
+        </div>
+          {% endif %}
+
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p> IIT Kharagpur, West Bengal, India</p>
+          <p>
+            projectzetax.noreply@gmail.com
+          </p>
+
+          <p> +91 93379 05894</p>
+          <p> +91 89042 34525</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2024 Copyright:
+    <a class="text-reset fw-bold" href="{{ url_for('home')}} ">Project ZetaX.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 {% endblock %}
