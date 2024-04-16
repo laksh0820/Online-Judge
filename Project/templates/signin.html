@@ -36,7 +36,14 @@
                 <br/>
 
                 {{ form.password.label(class='form-label') }}
-                {{ form.password(class='form-control') }}
+                {{ form.password(class="form-control",id="password") }}
+                <br>
+                <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="togglePassword">
+                        <label class="form-check-label" for="togglePassword">
+                                Show Password
+                        </label>
+                </div>
                 <br/>
                 {{ form.remember_me.label(class='form-label') }}
                 {{ form.remember_me() }}
@@ -45,11 +52,24 @@
                 {% if current_user.is_authenticated %}
                         <!-- <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a> -->
                 {% else %}
-                {{ form.submit(class="btn btn-secondary")}}
-                <a href="{{ url_for('forget_password') }}" style="margin-left: 15px" class="link-primary">Forget Password</a>
+                {{ form.submit(class="btn btn-secondary", id="submit_tab")}}
+                <a href="{{ url_for('forget_password') }}"  id="forget_password" class="btn btn-primary ">Forget Password</a>
                 {% endif %}
 
         </form>
+
+        <script>
+                const togglePassword = document.querySelector('#togglePassword');
+                const password = document.querySelector('#password');
+                togglePassword.addEventListener('click', () => {
+                    // Toggle the type attribute using
+                    // getAttribure() method
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    // Toggle the eye and bi-eye icon
+                    this.classList.toggle('bi-eye');
+                });
+        </script>
 
         {% block extra_newline %}
         <br/><br/>
