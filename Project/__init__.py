@@ -4,6 +4,8 @@ from flask_mail import Mail
 from datetime import timedelta
 import os
 
+# My name is Anonymous
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_BINDS'] = {'problems':'sqlite:///problem_set.db','submissions':'sqlite:///submissions.db'}   
