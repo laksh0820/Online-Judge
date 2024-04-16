@@ -16,6 +16,9 @@ python3 create_admin.py
 
 For running the app, just run the app.py file
 
-NOTE: Make sure that all the environment variable are listed in the .env file and 
+NOTE 1: Make sure that all the environment variable are listed in the .env file and 
       run "source .env" on the bash shell to ensure all the environment variable are
       defined. 
+
+NOTE 2: Host machine should be running UNIX OS as the commands used for running the C files
+are compatible only with UNIX bash shell.
