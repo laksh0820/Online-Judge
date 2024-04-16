@@ -2,26 +2,44 @@
 
 Introduction
 --------------
+Project ZetaX is an online C Programme Judging and Evaluation Software.
 
-Project ZetaX is an online C Programme Evaluation Software
+This Online Judge System aims to provide a platform-independent environment for evaluating C programs based on time complexity, space complexity, and adherence to given specifications. It will facilitate competitive programming, training, and learning of programming concepts such as algorithms and data structures. Additionally, the system will overcome challenges related to handling errors, memory usage, and integration with an online Integrated Development Environment (IDE).
 
-Firstly, We are required to install all the dependencies using the following command:
+Running the App
+----------------
+To run the app in your local environment::
 
-pip install -r requirements.txt
+        1. Clone the repository::
 
-For the first time when we are starting the host machine to launch the
-website on a local network, we have to ensure that the database tables
-are created.Also, We are required to create an admin for the website.
+              git clone https://github.com/laksh0820/Project-ZetaX.git
+              cd Project-ZetaX
 
-Run the following commands in the bash shell for creating an admin as well as databases:
+        2. Create and activate a virtual environment::
 
-python3 create_admin.py
+              python3 venv -m env
+              source ./env/bin/activate
 
-For running the app, just run the app.py file
+        3. Install requirements::
 
-NOTE 1: Make sure that all the environment variable are listed in the .env file and 
-      run "source .env" on the bash shell to ensure all the environment variable are
-      defined. 
+              pip install -r requirements.txt
 
-NOTE 2: Host machine should be running UNIX OS as the commands used for running the C files
-are compatible only with UNIX bash shell.
+        4. Create Database Tables and Admin::
+
+              python3 create_admin.py
+
+        5. Run the application::
+
+              python3 app.py
+
+> [!NOTE]
+>  Make sure that all the environment variable are listed in the .env file and 
+   run "source .env" on the bash shell to ensure all the environment variable are defined. 
+
+> [!NOTE]
+>  Host machine should be running UNIX OS as the commands used for running the C files
+   are compatible only with UNIX bash shell.
+
+3rd Party Stuff
+----------------
+This Online Judge system is built with the help of [Bootstrap](http://getbootstrap.com/)  and  [Ace Editor](https://ace.c9.io/).
