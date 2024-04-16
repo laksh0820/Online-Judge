@@ -77,7 +77,7 @@ html, body
     cursor: pointer;
 }
 
-#forget_password,#feedback
+#forget_password
 {
     border: 0;
     padding: .5em;
@@ -147,12 +147,17 @@ html, body
 
 #input_tab:hover,#output_tab:hover,#editor__run:hover,#editor__reset:hover,#file_load:hover,#file_submit:hover,#submit_tab:hover
 {
-    background-color: #007bff;;
+    background-color: #007bff;
 }
 
-#forget_password:hover,#feedback:hover
+#forget_password:hover
 {
     background-color: crimson;    
+}
+
+#feedback:hover
+{
+    color: #007bff;
 }
 
 .highlight_btn
