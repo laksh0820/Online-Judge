@@ -23,7 +23,7 @@ To run the app in your local environment::
 
         2. Create and activate a virtual environment::
 
-              python3 venv -m env
+              python3 -m venv env
               source ./env/bin/activate
 
         3. Install requirements::
